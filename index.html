@@ -568,6 +568,40 @@
     footer{padding:10px 18px;font-size:.72rem}
   }
 
+
+  /* Compact photo preview and one-page desktop workspace */
+  .download-compact{margin:10px auto 0;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:#fff;max-width:520px;text-align:center}
+  .download-compact .download-label{font-size:.75rem;font-weight:700;color:var(--muted);margin-bottom:7px}
+  .download-compact .download-row{display:flex;justify-content:center;gap:8px}
+  .download-compact .dl-btn{min-width:82px;padding:8px 14px}
+  .download-compact .dl-btn svg{display:none}
+  #receiptBody[hidden]{display:none!important}
+  @media (min-width:1000px){
+    main{max-width:1200px;padding:10px 22px 8px}
+    .hero{padding-top:8px}
+    .hero h2{font-size:1.45rem}
+    .hero p.lead{margin:3px 0}
+    .spec-pills{margin-top:5px}
+    .stats-strip{margin-top:5px}
+    .stat-box{padding:5px 10px}
+    .tool-grid{grid-template-columns:minmax(0,1fr);gap:8px}
+    .tool-grid>.panel{width:100%;min-height:0}
+    .dropzone{min-height:0;padding:10px 14px}
+    .dz-inner{padding:12px!important}
+    .dz-icon{width:42px;height:42px;margin-bottom:7px}
+    .dz-icon svg{width:22px;height:22px}
+    .dz-inner h3{margin:5px 0;font-size:1rem}
+    .dz-inner p{margin:4px 0 8px;font-size:.78rem}
+    .pick-btn{padding:7px 16px;font-size:.82rem}
+    .preview-wrap{padding:8px 12px}
+    .preview-container{max-width:520px;margin:0 auto;gap:10px}
+    .preview-card h4{font-size:.78rem}
+    .preview-img-frame{aspect-ratio:3/2.35;max-height:210px}
+    .preview-img-frame img{object-fit:contain}
+    .photo-nav{max-width:520px;margin:8px auto 0}
+    .hint-note{margin:6px auto 0;max-width:1000px;font-size:.68rem}
+  }
+
 </style>
 
 <style>
@@ -687,39 +721,16 @@
       </div>
     </div>
 
-    <!-- Receipt / spec panel -->
-    <div class="panel receipt">
-      <div class="receipt-head">
-        <span class="label">Output Specs</span>
-        <h3>Spec Receipt</h3>
-      </div>
-
-      <div id="receiptBody">
-        <div class="empty-receipt">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="display:block;margin:0 auto;"><path d="M6 2h9l3 3v17H6z"/><path d="M9 9h6M9 13h6M9 17h3"/></svg>
-          Specs will appear here once you upload a photo.
-        </div>
-      </div>
-
-      <div class="receipt-foot">
-        <div class="download-label">Download</div>
-        <div class="download-row">
-          <button class="dl-btn" id="dlJpg" disabled>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 16V4M12 4 8 8M12 4l4 4" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" stroke-linecap="round"/></svg>
-            JPG
-          </button>
-          <button class="dl-btn" id="dlPng" disabled>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 16V4M12 4 8 8M12 4l4 4" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" stroke-linecap="round"/></svg>
-            PNG
-          </button>
-          <button class="dl-btn" id="dlPdf" disabled>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 16V4M12 4 8 8M12 4l4 4" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" stroke-linecap="round"/></svg>
-            PDF
-          </button>
-        </div>
+    <!-- Compact download controls; detailed specifications panel removed -->
+    <div class="download-compact">
+      <div class="download-label">Download Resized Photo</div>
+      <div class="download-row">
+        <button class="dl-btn" id="dlJpg" disabled>JPG</button>
+        <button class="dl-btn" id="dlPng" disabled>PNG</button>
+        <button class="dl-btn" id="dlPdf" disabled>PDF</button>
       </div>
     </div>
-
+    <div id="receiptBody" hidden></div>
   </div>
 
   <p class="hint-note">Tip: <b>a clear, well-lit photo of your face</b> gives the best result, since the background is automatically replaced with white. This tool runs entirely in your browser — your photo is never uploaded to any server.</p>
