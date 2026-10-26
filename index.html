@@ -584,7 +584,7 @@
     .spec-pills{margin-top:5px}
     .stats-strip{margin-top:5px}
     .stat-box{padding:5px 10px}
-    .tool-grid{grid-template-columns:minmax(0,1fr);gap:8px}
+    .tool-grid{grid-template-columns:minmax(220px,.78fr) minmax(260px,1.05fr) minmax(220px,.78fr);gap:12px;align-items:stretch}
     .tool-grid>.panel{width:100%;min-height:0}
     .dropzone{min-height:0;padding:10px 14px}
     .dz-inner{padding:12px!important}
@@ -593,13 +593,39 @@
     .dz-inner h3{margin:5px 0;font-size:1rem}
     .dz-inner p{margin:4px 0 8px;font-size:.78rem}
     .pick-btn{padding:7px 16px;font-size:.82rem}
-    .preview-wrap{padding:8px 12px}
-    .preview-container{max-width:520px;margin:0 auto;gap:10px}
+    .preview-wrap{padding:8px}
+    .preview-container{max-width:100%;margin:0 auto;gap:8px}
     .preview-card h4{font-size:.78rem}
-    .preview-img-frame{aspect-ratio:3/2.35;max-height:210px}
+    .preview-img-frame{aspect-ratio:3/3.1;max-height:245px}
     .preview-img-frame img{object-fit:contain}
-    .photo-nav{max-width:520px;margin:8px auto 0}
+    .photo-nav{max-width:100%;margin:8px auto 0}
+    .receipt-head{padding:10px 12px 7px}
+    .receipt-head h3{font-size:1rem}
+    .receipt-rows{padding:6px 12px 3px}
+    .r-row{font-size:.75rem;padding:4px 0}
+    .receipt-foot{padding:10px 12px}
+    .receipt .download-row{gap:5px}
+    .receipt .dl-btn{min-width:0;flex:1;padding:8px 4px;font-size:.75rem}
     .hint-note{margin:6px auto 0;max-width:1000px;font-size:.68rem}
+  }
+
+
+  /* Professional refinements */
+  :root{--radius:12px}
+  header{box-shadow:0 2px 12px rgba(27,58,75,.05)}
+  .brand-text h1{letter-spacing:-.02em}
+  .panel{box-shadow:0 5px 18px rgba(27,58,75,.08);border-color:#e3dfd4}
+  .panel:focus-within{border-color:var(--teal)}
+  .pick-btn,.next-photo,.dl-btn{transition:transform .15s ease,box-shadow .15s ease,background .15s ease}
+  .pick-btn:hover,.next-photo:hover:not(:disabled),.dl-btn:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 3px 9px rgba(27,58,75,.12)}
+  .empty-receipt{padding:16px 12px;text-align:center;color:var(--muted);font-size:.82rem}
+  .receipt-foot{border-top:1px solid #eee9de}
+  .receipt .download-label{text-align:center;font-size:.72rem;font-weight:700;letter-spacing:.04em;color:var(--muted);margin-bottom:7px}
+  .receipt .download-row{display:flex;justify-content:center;gap:7px}
+  .receipt .dl-btn{min-width:0;flex:1;justify-content:center}
+  @media (max-width:999px){
+    .tool-grid{grid-template-columns:1fr}
+    .receipt{min-height:0}
   }
 
 </style>
@@ -721,16 +747,24 @@
       </div>
     </div>
 
-    <!-- Compact download controls; detailed specifications panel removed -->
-    <div class="download-compact">
-      <div class="download-label">Download Resized Photo</div>
-      <div class="download-row">
-        <button class="dl-btn" id="dlJpg" disabled>JPG</button>
-        <button class="dl-btn" id="dlPng" disabled>PNG</button>
-        <button class="dl-btn" id="dlPdf" disabled>PDF</button>
+    <!-- Compact specifications panel restored -->
+    <div class="panel receipt">
+      <div class="receipt-head">
+        <span class="label">PHOTO DETAILS</span>
+        <h3>Specifications</h3>
+      </div>
+      <div id="receiptBody">
+        <div class="empty-receipt">Upload a photo to view its output specifications.</div>
+      </div>
+      <div class="receipt-foot">
+        <div class="download-label">Download Photo</div>
+        <div class="download-row">
+          <button class="dl-btn" id="dlJpg" disabled>JPG</button>
+          <button class="dl-btn" id="dlPng" disabled>PNG</button>
+          <button class="dl-btn" id="dlPdf" disabled>PDF</button>
+        </div>
       </div>
     </div>
-    <div id="receiptBody" hidden></div>
   </div>
 
   <p class="hint-note">Tip: <b>a clear, well-lit photo of your face</b> gives the best result, since the background is automatically replaced with white. This tool runs entirely in your browser — your photo is never uploaded to any server.</p>
