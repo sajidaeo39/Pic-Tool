@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pic Setting Free Tool - Developed by M. Sajid The Educational Helper</title>
-<meta name="description" content="Convert your photo to 600x800 resolution, under 25KB file size, with a clean white background — download as JPG, PNG, or PDF.">
+<title>Photo Resizer &amp; White Background Tool | The Educational Helper</title>
+<meta name="description" content="Resize photos to 600×800, prepare a clean white background, and download as JPG, PNG, or PDF with this free photo tool.">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -662,6 +662,59 @@
 button:focus-visible,summary:focus-visible{outline:3px solid rgba(43,111,105,.45);outline-offset:3px}
 @media(max-width:700px){.workflow-bar{gap:6px;padding:9px 8px;margin-bottom:10px}.workflow-step{gap:5px}.workflow-step b{font-size:.7rem}.workflow-step small{font-size:.58rem}.step-number{width:26px;height:26px}.step-connector{width:10px}.help-content{grid-template-columns:1fr}.quick-help{margin-top:9px}}
 </style>
+
+<style>
+/* Final responsive polish only — photo processing logic is intentionally untouched. */
+html{scroll-behavior:smooth}
+body{overflow-x:hidden}
+button,.pick-btn,.dl-btn,.next-photo{transition:background-color .18s ease,border-color .18s ease,box-shadow .18s ease,transform .18s ease}
+button:active:not(:disabled),.pick-btn:active,.dl-btn:active:not(:disabled),.next-photo:active:not(:disabled){transform:translateY(1px)}
+button:disabled,.dl-btn:disabled{cursor:not-allowed}
+.tool-grid{gap:14px}
+.tool-grid>.panel{border-radius:15px}
+.preview-wrap,.receipt{min-width:0}
+.preview-img-frame{overflow:hidden;background:linear-gradient(45deg,#f7f7f7 25%,transparent 25%),linear-gradient(-45deg,#f7f7f7 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#f7f7f7 75%),linear-gradient(-45deg,transparent 75%,#f7f7f7 75%);background-size:16px 16px;background-position:0 0,0 8px,8px -8px,-8px 0}
+.preview-img-frame img{max-width:100%;max-height:100%}
+.receipt-rows,.receipt-body{overflow-wrap:anywhere}
+.quick-help summary{user-select:none}
+@media(min-width:1000px){
+  .workflow-bar{margin-bottom:10px}
+  .tool-grid{grid-template-columns:minmax(205px,.78fr) minmax(320px,1.25fr) minmax(230px,.88fr);gap:12px}
+}
+@media(max-width:999px){
+  main{padding-top:14px}
+  .tool-grid{gap:12px}
+  .dropzone{min-height:250px}
+  .preview-container{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .preview-img-frame{max-height:360px}
+}
+@media(max-width:700px){
+  header{gap:8px;flex-wrap:wrap}
+  .workflow-bar{width:100%;justify-content:space-between}
+  .workflow-step{min-width:0}
+  .workflow-step small{white-space:nowrap}
+  .step-connector{flex:1;min-width:7px}
+  .preview-container{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .preview-card h4{font-size:.8rem}
+  .preview-img-frame{aspect-ratio:3/4;max-height:300px}
+  .receipt .download-row{gap:6px}
+  .receipt .dl-btn{min-height:38px}
+  .quick-help summary{padding:12px}
+}
+@media(max-width:380px){
+  .workflow-step{gap:4px}
+  .workflow-step b{font-size:.65rem}
+  .workflow-step small{font-size:.54rem}
+  .step-number{width:23px;height:23px}
+  .step-connector{min-width:4px}
+  .preview-container{gap:6px}
+}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{transition:none!important;animation:none!important}
+}
+</style>
+
 </head>
 <body>
 
