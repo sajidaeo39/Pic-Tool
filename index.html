@@ -638,6 +638,30 @@
 }
 </style>
 
+<style>
+/* Interactive dashboard workflow and help */
+.workflow-bar{display:flex;align-items:center;justify-content:center;gap:12px;max-width:780px;margin:0 auto 14px;padding:10px 18px;background:rgba(255,255,255,.82);border:1px solid var(--line);border-radius:14px;box-shadow:0 4px 16px rgba(27,58,75,.045)}
+.workflow-step{display:flex;align-items:center;gap:9px;color:var(--muted);opacity:.72;transition:opacity .2s ease,color .2s ease}
+.workflow-step b{display:block;font-size:.78rem;color:var(--navy)}
+.workflow-step small{display:block;font-size:.66rem;margin-top:2px}
+.step-number{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;border:1px solid var(--line);font-size:.78rem;font-weight:800;background:#fff}
+.workflow-step.is-current,.workflow-step.is-done{opacity:1}
+.workflow-step.is-current .step-number{background:var(--teal);border-color:var(--teal);color:#fff;box-shadow:0 0 0 4px rgba(43,111,105,.12)}
+.workflow-step.is-done .step-number{background:#e3f2ed;border-color:#b9d9cd;color:#28695f}
+.step-connector{height:1px;width:clamp(18px,5vw,60px);background:var(--line)}
+.quick-help{max-width:920px;margin:10px auto 0;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.78);font-size:.8rem}
+.quick-help summary{cursor:pointer;padding:11px 14px;font-weight:700;color:var(--navy);list-style:none}
+.quick-help summary::-webkit-details-marker{display:none}
+.quick-help summary:after{content:"+";float:right;font-size:1.1rem;color:var(--teal)}
+.quick-help[open] summary:after{content:"−"}
+.help-content{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;padding:0 14px 13px}
+.help-content div{display:flex;flex-direction:column;gap:4px;padding:10px;border-radius:8px;background:#f8f7f2}
+.help-content b{color:var(--teal)}
+.help-content span{color:var(--muted);line-height:1.45}
+#dropzone.drag-over{outline:2px dashed var(--teal);outline-offset:-7px;background:#eef7f3}
+button:focus-visible,summary:focus-visible{outline:3px solid rgba(43,111,105,.45);outline-offset:3px}
+@media(max-width:700px){.workflow-bar{gap:6px;padding:9px 8px;margin-bottom:10px}.workflow-step{gap:5px}.workflow-step b{font-size:.7rem}.workflow-step small{font-size:.58rem}.step-number{width:26px;height:26px}.step-connector{width:10px}.help-content{grid-template-columns:1fr}.quick-help{margin-top:9px}}
+</style>
 </head>
 <body>
 
@@ -686,6 +710,13 @@
 </section>
 
 <main>
+  <div class="workflow-bar" aria-label="Photo workflow">
+    <div class="workflow-step is-current" data-step="1"><span class="step-number">1</span><span><b>Upload</b><small>Choose photo</small></span></div>
+    <span class="step-connector"></span>
+    <div class="workflow-step" data-step="2"><span class="step-number">2</span><span><b>Review</b><small>Check preview</small></span></div>
+    <span class="step-connector"></span>
+    <div class="workflow-step" data-step="3"><span class="step-number">3</span><span><b>Download</b><small>Save your file</small></span></div>
+  </div>
   <div class="tool-grid">
 
 
@@ -741,6 +772,14 @@
     </div>
   </div>
 
+  <details class="quick-help">
+    <summary>How to use this tool</summary>
+    <div class="help-content">
+      <div><b>1. Select</b><span>Choose one or more JPG/PNG photos.</span></div>
+      <div><b>2. Review</b><span>Wait for processing, then compare Before and After.</span></div>
+      <div><b>3. Save</b><span>Choose JPG, PNG, or PDF in Specifications.</span></div>
+    </div>
+  </details>
   <p class="hint-note">Tip: <b>a clear, well-lit photo of your face</b> gives the best result, since the background is automatically replaced with white. This tool runs entirely in your browser — your photo is never uploaded to any server.</p>
 </main>
 
@@ -1253,5 +1292,32 @@ loadInitialStats();
 
 
 
+<script>
+/* Keep the workflow guide in sync with the actual tool state. */
+(function(){
+  function initWorkflow(){
+    const steps=[...document.querySelectorAll('.workflow-step')];
+    const dropzone=document.getElementById('dropzone');
+    const preview=document.getElementById('previewWrap');
+    const buttons=['dlJpg','dlPng','dlPdf'].map(id=>document.getElementById(id)).filter(Boolean);
+    if(!steps.length||!dropzone||!preview)return;
+    function update(){
+      const hasPhoto=preview.classList.contains('active');
+      const canDownload=buttons.some(b=>!b.disabled);
+      const current=canDownload?3:(hasPhoto?2:1);
+      steps.forEach((el,i)=>{el.classList.toggle('is-current',i+1===current);el.classList.toggle('is-done',i+1<current);});
+    }
+    const observer=new MutationObserver(update);
+    observer.observe(preview,{attributes:true,attributeFilter:['class']});
+    buttons.forEach(b=>{b.addEventListener('click',()=>setTimeout(update,80));});
+    const input=document.getElementById('fileInput');
+    if(input)input.addEventListener('change',()=>setTimeout(update,100));
+    ['dragenter','dragover'].forEach(ev=>dropzone.addEventListener(ev,e=>{e.preventDefault();dropzone.classList.add('drag-over');}));
+    ['dragleave','drop'].forEach(ev=>dropzone.addEventListener(ev,e=>{e.preventDefault();dropzone.classList.remove('drag-over');}));
+    update();
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initWorkflow);else initWorkflow();
+})();
+</script>
 </body>
 </html>
