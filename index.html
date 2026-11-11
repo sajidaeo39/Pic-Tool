@@ -963,6 +963,143 @@ button:disabled{opacity:.52}
   .workflow-bar .workflow-step small{white-space:normal}
 }
 </style>
+
+<style>
+/* Professional visual refinement: presentation only; processing scripts unchanged. */
+:root{
+  --navy:#17324d;
+  --teal:#247568;
+  --teal-dark:#1c5d53;
+  --line:#dce4e9;
+  --cream:#f4f7f9;
+  --paper:#fff;
+  --muted:#627180;
+  --shadow:0 5px 18px rgba(25,48,68,.07);
+}
+body{background:#f3f6f8;color:#243444}
+.bg-texture{
+  background:
+    radial-gradient(circle at 8% 5%,rgba(36,117,104,.055),transparent 34%),
+    radial-gradient(circle at 94% 90%,rgba(23,50,77,.045),transparent 38%);
+}
+header.site-header{
+  position:relative;top:auto;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:0;width:100%;padding:16px 20px 15px;
+  background:linear-gradient(115deg,#17324d,#214a62);
+  color:#fff;border:0;border-bottom:3px solid #2d8a7b;
+  box-shadow:0 4px 15px rgba(20,43,62,.13);
+}
+.site-header h1{
+  color:#fff;font-size:clamp(1.15rem,2.2vw,1.55rem);
+  font-weight:750;letter-spacing:.01em;text-transform:none;
+  line-height:1.25;margin:0 0 3px;
+}
+.site-header h2{color:#dbe8ef;font-size:.8rem;font-weight:500;margin:0}
+.site-header .header-credit{color:#d8e3e9;font-size:.72rem;margin:6px auto 0}
+.site-header .header-links{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:9px;width:min(100%,690px);margin:11px auto 0;
+}
+.site-header .header-support{
+  display:flex;flex-direction:row;align-items:center;justify-content:center;
+  gap:6px;min-width:0;min-height:38px;width:100%;padding:7px 10px;
+  border:1px solid rgba(255,255,255,.25);border-radius:8px;
+  background:rgba(255,255,255,.10);color:#fff;
+  font-size:.72rem;font-weight:650;line-height:1.25;text-align:center;
+  white-space:normal;box-shadow:none;
+}
+.site-header .header-support span{display:inline}
+.site-header .header-support:hover{background:rgba(255,255,255,.2);transform:translateY(-1px)}
+.site-header .whatsapp-channel-link{background:#e9f8f0;color:#176342;border-color:#c9e9d7}
+.site-header .whatsapp-channel-link:hover{background:#d9f1e4}
+.hero{
+  width:100%;max-width:1040px;margin:0 auto;padding:14px 22px 7px;
+  text-align:center;
+}
+.stats-strip{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;width:min(100%,790px);margin:0 auto;align-items:stretch;
+}
+.stats-strip .stat-box{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  min-width:0;min-height:76px;width:100%;padding:10px 12px;
+  border:1px solid #e0e7ec;border-radius:11px;background:#fff;
+  box-shadow:0 3px 12px rgba(25,48,68,.045);gap:2px;
+}
+.stat-num{font-size:1.55rem;line-height:1.15;color:#17324d;font-weight:750}
+.stat-label{font-size:.69rem;line-height:1.35;color:#657483;text-align:center}
+main{
+  width:100%;max-width:1080px;margin:0 auto;padding:8px 22px 24px;
+}
+.workflow-bar{
+  display:flex;align-items:center;justify-content:center;
+  width:min(100%,680px);max-width:680px;margin:0 auto 13px;padding:9px 18px;
+  gap:13px;border:1px solid #e0e7ec;border-radius:11px;
+  background:#fff;box-shadow:0 3px 12px rgba(25,48,68,.04);
+}
+.workflow-step{display:flex;flex:1;align-items:center;justify-content:center;gap:8px;min-width:0;opacity:.7}
+.workflow-step.is-current,.workflow-step.is-done{opacity:1}
+.workflow-step b{font-size:.76rem;color:#243c50}
+.workflow-step small{font-size:.63rem;color:#788693}
+.step-number{
+  width:27px;height:27px;flex:0 0 27px;display:grid;place-items:center;
+  border-radius:50%;font-size:.72rem;font-weight:750;
+  border:1px solid #d8e2e8;background:#f4f7f9;color:#526574;
+}
+.workflow-step.is-current .step-number{background:#247568;border-color:#247568;color:#fff;box-shadow:0 0 0 3px rgba(36,117,104,.12)}
+.workflow-step.is-done .step-number{background:#e6f3ee;border-color:#c4e2d5;color:#247568}
+.step-connector{height:1px;flex:0 0 30px;background:#dce4e9}
+.tool-grid{
+  display:grid;grid-template-columns:minmax(0,1.1fr) minmax(300px,.9fr);
+  gap:16px;align-items:stretch;
+}
+.tool-grid>.panel{
+  min-width:0;border:1px solid #dfe6eb;border-radius:13px;
+  background:#fff;box-shadow:var(--shadow);overflow:hidden;
+}
+.dropzone{min-height:320px;border-radius:13px}
+.dropzone .dz-inner{padding:24px}
+.dz-icon{width:54px;height:54px;margin-bottom:13px;border-radius:14px}
+.dropzone h3{font-size:1.22rem;color:#17324d}
+.dropzone p{font-size:.82rem;color:#687887}
+.pick-btn{background:#247568;border-radius:8px;padding:10px 22px;box-shadow:0 3px 8px rgba(36,117,104,.15)}
+.pick-btn:hover{background:#1c5d53}
+.preview-wrap{padding:17px}
+.preview-img-frame{border:1px solid #e2e8ec;border-radius:9px;background-color:#f8fafb}
+.receipt-head{background:#f7f9fa;border-bottom:1px solid #e6ecef}
+.receipt-head .label{color:#728291}
+.receipt-head h3{color:#17324d}
+.receipt-foot{background:#f8fafb;border-top:1px solid #e6ecef}
+.receipt .dl-btn{border-radius:8px}
+.quick-help{max-width:100%;margin:12px auto 0;border-color:#dfe6eb;background:#fff;box-shadow:0 3px 12px rgba(25,48,68,.035)}
+.quick-help summary{color:#244158}
+.hint-note{max-width:100%;color:#71808c;text-align:center;font-size:.72rem;margin:9px auto 0}
+@media(max-width:760px){
+  header.site-header{padding:13px 12px}
+  .site-header .header-links{grid-template-columns:1fr;max-width:340px;gap:6px}
+  .site-header .header-support{min-height:36px}
+  .hero{padding:12px 12px 7px}
+  .stats-strip{gap:6px}
+  .stats-strip .stat-box{min-height:65px;padding:7px 4px}
+  .stat-num{font-size:1.2rem}
+  .stat-label{font-size:.59rem}
+  main{padding:8px 12px 20px}
+  .workflow-bar{padding:8px 7px;gap:5px}
+  .workflow-step{flex-direction:column;gap:3px;text-align:center}
+  .workflow-step b{font-size:.68rem}
+  .workflow-step small{font-size:.57rem;white-space:normal}
+  .step-connector{flex:0 0 9px}
+  .tool-grid{grid-template-columns:1fr;gap:11px}
+  .dropzone{min-height:235px}
+}
+@media(max-width:380px){
+  .stat-label{font-size:.54rem}
+  .stat-num{font-size:1.08rem}
+  .workflow-bar{gap:3px}
+  .step-connector{flex-basis:5px}
+}
+</style>
 </head>
 <body>
 
