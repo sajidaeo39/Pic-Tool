@@ -1693,22 +1693,41 @@ document.addEventListener('DOMContentLoaded', function(){
 </script>
 
 <style id="equal-width-tool-panels">
-/* Match each processing panel exactly to the width of the six header cards. */
-@media(min-width:801px){
- main{
-  width:min(100%,690px)!important;
-  max-width:690px!important;
-  padding-left:0!important;
-  padding-right:0!important;
- }
- .tool-grid{
+/* Exact shared container and column geometry for the 6 header cards and 3 tool panels. */
+@media(min-width:701px){
+ section.header-links{
+  display:grid!important;
   grid-template-columns:repeat(3,minmax(0,1fr))!important;
   gap:9px!important;
+  width:min(690px,calc(100% - 32px))!important;
+  max-width:690px!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+  box-sizing:border-box!important;
+ }
+ main{
+  width:min(690px,calc(100% - 32px))!important;
+  max-width:690px!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+  padding-left:0!important;
+  padding-right:0!important;
+  box-sizing:border-box!important;
+ }
+ .tool-grid{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:9px!important;
+  width:100%!important;
+  margin:0!important;
   align-items:stretch!important;
+  box-sizing:border-box!important;
  }
  .tool-grid>.panel{
   width:100%!important;
   min-width:0!important;
+  max-width:none!important;
+  margin:0!important;
   box-sizing:border-box!important;
  }
  .dropzone{min-height:360px!important}
