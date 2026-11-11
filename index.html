@@ -1678,25 +1678,42 @@ main{padding-top:5px!important}
 </style>
 <script id="choose-another-photo-ui-script">
 document.addEventListener('DOMContentLoaded', function(){
- const btn=document.getElementById('chooseAnotherPhotoBtn');
  const wrap=document.getElementById('chooseAnotherWrap');
- const input=document.getElementById('fileInput');
  const inner=document.getElementById('dzInner');
- if(!btn||!wrap||!input||!inner)return;
- btn.addEventListener('click',function(e){
-  e.preventDefault();
-  e.stopPropagation();
-  input.value='';
-  input.click();
- });
+ if(!wrap||!inner)return;
+ /* Keep the complete Select Image layout visible after processing. */
  const observer=new MutationObserver(function(){
-  wrap.hidden=inner.style.display!=='none';
+  if(inner.style.display==='none') inner.style.display='block';
+  wrap.hidden=true;
  });
  observer.observe(inner,{attributes:true,attributeFilter:['style']});
- wrap.hidden=inner.style.display!=='none';
+ if(inner.style.display==='none') inner.style.display='block';
+ wrap.hidden=true;
 });
 </script>
 
+<style id="equal-width-tool-panels">
+/* Match the three processing panels to the compact three-column header cards. */
+@media(min-width:801px){
+ main{
+  width:min(100%,720px)!important;
+  max-width:720px!important;
+  padding-left:0!important;
+  padding-right:0!important;
+ }
+ .tool-grid{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:10px!important;
+  align-items:stretch!important;
+ }
+ .tool-grid>.panel{
+  width:100%!important;
+  min-width:0!important;
+  box-sizing:border-box!important;
+ }
+ .dropzone{min-height:360px!important}
+}
+</style>
 </head>
 <body>
 
