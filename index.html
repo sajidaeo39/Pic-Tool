@@ -1245,6 +1245,54 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid rgba(
 @media(max-width:360px){.stat-label{font-size:.49rem!important}.preview-panel .preview-container{grid-template-columns:1fr}.preview-panel .preview-img-frame{max-height:340px}}
 </style>
 
+
+<style id="compact-header-workflow">
+/* Compact single-line social links and unboxed workflow */
+.site-header .header-links{
+ display:flex!important;flex-direction:row!important;flex-wrap:nowrap!important;
+ justify-content:center!important;align-items:center!important;gap:8px!important;
+ width:max-content;max-width:100%;margin:10px auto 0!important;
+}
+.site-header .header-support{
+ display:inline-flex!important;flex-direction:row!important;align-items:center!important;
+ justify-content:center!important;gap:5px!important;min-width:0!important;
+ padding:7px 11px!important;border-radius:8px!important;
+ white-space:nowrap;font-size:.69rem!important;line-height:1.2!important;
+}
+.site-header .header-support span{display:inline!important}
+.workflow-bar{
+ display:flex!important;flex-direction:row!important;flex-wrap:nowrap!important;
+ align-items:center!important;justify-content:center!important;gap:13px!important;
+ width:max-content;max-width:100%;margin:0 auto 17px!important;padding:5px 0!important;
+ border:0!important;border-radius:0!important;background:transparent!important;
+ box-shadow:none!important;overflow-x:auto;
+}
+.workflow-step{display:flex!important;flex-direction:row!important;align-items:center!important;gap:6px!important;white-space:nowrap}
+.workflow-step>span:last-child{display:flex;flex-direction:row;align-items:baseline;gap:5px}
+.workflow-step b{font-size:.76rem!important;font-weight:800!important}
+.workflow-step small{display:inline!important;font-size:.68rem!important;color:#71808b!important}
+.step-number{width:25px!important;height:25px!important;flex:0 0 25px!important;border-radius:50%!important;font-size:.68rem!important}
+.step-connector{width:20px!important;flex:0 0 20px!important;height:1px!important;background:#cbd6dc!important}
+@media(max-width:600px){
+ .site-header .header-links{width:100%;gap:5px!important}
+ .site-header .header-support{padding:7px 7px!important;font-size:.61rem!important;gap:3px!important}
+ .workflow-bar{width:100%;gap:6px!important;justify-content:center!important;padding:4px 0!important}
+ .workflow-step{gap:4px!important}
+ .workflow-step>span:last-child{gap:3px}
+ .workflow-step b{font-size:.65rem!important}
+ .workflow-step small{font-size:.57rem!important}
+ .step-number{width:22px!important;height:22px!important;flex-basis:22px!important;font-size:.62rem!important}
+ .step-connector{width:9px!important;flex-basis:9px!important}
+}
+@media(max-width:370px){
+ .site-header .header-support{font-size:.56rem!important;padding:6px 5px!important}
+ .workflow-bar{gap:4px!important}
+ .workflow-step b{font-size:.6rem!important}
+ .workflow-step small{font-size:.52rem!important}
+ .step-connector{width:5px!important;flex-basis:5px!important}
+}
+</style>
+
 </head>
 <body>
 
