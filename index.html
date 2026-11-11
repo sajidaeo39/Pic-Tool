@@ -1693,21 +1693,21 @@ document.addEventListener('DOMContentLoaded', function(){
 </script>
 
 <style id="equal-width-tool-panels">
-/* Exact shared container and column geometry for the 6 header cards and 3 tool panels. */
-@media(min-width:701px){
+/* Desktop: six compact header cards span the same container as three wider processing panels. */
+@media(min-width:1000px){
  section.header-links{
   display:grid!important;
   grid-template-columns:repeat(6,minmax(0,1fr))!important;
-  gap:9px!important;
-  width:min(690px,calc(100% - 32px))!important;
-  max-width:690px!important;
+  gap:10px!important;
+  width:min(1180px,calc(100% - 40px))!important;
+  max-width:1180px!important;
   margin-left:auto!important;
   margin-right:auto!important;
   box-sizing:border-box!important;
  }
  main{
-  width:min(690px,calc(100% - 32px))!important;
-  max-width:690px!important;
+  width:min(1180px,calc(100% - 40px))!important;
+  max-width:1180px!important;
   margin-left:auto!important;
   margin-right:auto!important;
   padding-left:0!important;
@@ -1717,7 +1717,7 @@ document.addEventListener('DOMContentLoaded', function(){
  .tool-grid{
   display:grid!important;
   grid-template-columns:repeat(3,minmax(0,1fr))!important;
-  gap:9px!important;
+  gap:10px!important;
   width:100%!important;
   margin:0!important;
   align-items:stretch!important;
@@ -1727,10 +1727,25 @@ document.addEventListener('DOMContentLoaded', function(){
   width:100%!important;
   min-width:0!important;
   max-width:none!important;
+  min-height:300px!important;
   margin:0!important;
   box-sizing:border-box!important;
  }
- .dropzone{min-height:360px!important}
+ .dropzone{min-height:300px!important}
+ .tool-grid>.preview-panel,.tool-grid>.receipt{min-height:300px!important}
+}
+@media(min-width:701px) and (max-width:999px){
+ section.header-links{
+  width:calc(100% - 32px)!important;
+  max-width:900px!important;
+ }
+ main{
+  width:calc(100% - 32px)!important;
+  max-width:900px!important;
+ }
+ .tool-grid{gap:9px!important}
+ .dropzone{min-height:300px!important}
+ .tool-grid>.panel{min-height:300px!important}
 }
 </style>
 </head>
