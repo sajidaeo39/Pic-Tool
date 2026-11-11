@@ -900,6 +900,69 @@ button:disabled{opacity:.52}
   .quick-help{margin-top:5px}
 }
 </style>
+
+<style>
+/* Equal-width branded links, statistics and workflow cards. */
+.site-header .header-links{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  width:min(100%,760px);
+  align-items:stretch;
+}
+.site-header .header-support{
+  width:100%;
+  min-width:0;
+  min-height:48px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  box-sizing:border-box;
+}
+.stats-strip{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  width:min(100%,720px);
+  margin-left:auto;
+  margin-right:auto;
+  align-items:stretch;
+}
+.stats-strip .stat-box{
+  width:100%;
+  min-width:0;
+  min-height:62px;
+  box-sizing:border-box;
+  justify-content:center;
+}
+.workflow-bar{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 24px minmax(0,1fr) 24px minmax(0,1fr);
+  width:min(100%,680px);
+  align-items:center;
+  box-sizing:border-box;
+}
+.workflow-bar .workflow-step{
+  min-width:0;
+  width:100%;
+  justify-content:center;
+}
+.workflow-bar .step-connector{
+  width:100%;
+  min-width:0;
+}
+@media(max-width:700px){
+  .site-header .header-links{grid-template-columns:1fr;width:100%;max-width:340px}
+  .site-header .header-support{min-height:42px}
+  .stats-strip{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+  .stats-strip .stat-box{padding:7px 4px;min-height:58px}
+  .stat-label{font-size:.58rem;line-height:1.25}
+  .workflow-bar{grid-template-columns:minmax(0,1fr) 10px minmax(0,1fr) 10px minmax(0,1fr);gap:5px}
+  .workflow-bar .workflow-step{flex-direction:column;gap:3px;text-align:center}
+  .workflow-bar .workflow-step>span:last-child{min-width:0}
+  .workflow-bar .workflow-step small{white-space:normal}
+}
+</style>
 </head>
 <body>
 
