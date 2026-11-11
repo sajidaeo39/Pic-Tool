@@ -1329,6 +1329,55 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid rgba(
  .stats-strip .stat-label{font-size:.49rem!important}
  .stats-strip .stat-num{font-size:1.08rem!important}
 }
+
+/* Desktop workspace: Upload, Before/After preview and Specifications in one balanced row. */
+@media(min-width:1000px){
+ main{max-width:1320px!important}
+ .tool-grid{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:14px!important;
+  align-items:stretch!important;
+ }
+ .tool-grid>.panel{
+  min-width:0!important;
+  min-height:350px!important;
+  height:100%!important;
+ }
+ .tool-grid>.preview-panel{
+  display:none;
+  margin:0!important;
+  min-height:350px!important;
+  height:100%!important;
+ }
+ main:has(#previewWrap.active) .tool-grid>.preview-panel{display:flex!important;flex-direction:column}
+ .tool-grid>.preview-panel .preview-wrap{display:flex;flex:1;flex-direction:column;justify-content:space-between;min-height:0;padding:12px!important}
+ .tool-grid>.preview-panel .preview-container{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important;flex:1;align-items:stretch}
+ .tool-grid>.preview-panel .preview-card{min-width:0;padding:7px!important;display:flex;flex-direction:column}
+ .tool-grid>.preview-panel .preview-card h4{font-size:.72rem!important;margin-bottom:5px!important}
+ .tool-grid>.preview-panel .preview-img-frame{flex:1;min-height:150px;max-height:245px!important;aspect-ratio:3/4!important}
+ .tool-grid>.preview-panel .preview-panel-head{padding:12px!important}
+ .tool-grid>.preview-panel .preview-panel-head h3{font-size:.95rem!important}
+ .tool-grid>.preview-panel .preview-panel-note{display:none}
+ .tool-grid>.receipt{min-height:350px!important}
+ .tool-grid>.receipt .receipt-head{padding:14px 15px 11px!important}
+ .tool-grid>.receipt .receipt-rows{padding:8px 14px!important}
+ .tool-grid>.receipt .r-row{gap:7px;padding:8px 0!important;font-size:.72rem!important}
+ .tool-grid>.receipt .receipt-foot{padding:12px!important}
+ .tool-grid>.receipt .download-row{gap:5px}
+ .tool-grid>.receipt .dl-btn{font-size:.68rem!important}
+}
+@media(min-width:701px) and (max-width:999px){
+ .tool-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;align-items:stretch!important}
+ .tool-grid>.preview-panel{grid-column:1/-1;order:2}
+ .tool-grid>.receipt{order:3}
+}
+@media(max-width:700px){
+ .tool-grid{display:flex!important;flex-direction:column!important}
+ .tool-grid>.panel{width:100%!important}
+ .tool-grid>.preview-panel{order:2}
+ .tool-grid>.receipt{order:3}
+}
+
 </style>
 
 </head>
@@ -1384,28 +1433,6 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid rgba(
       </div>
     </div>
 
-    <!-- Specifications remain beside the upload workspace -->
-    <!-- Compact specifications panel restored -->
-    <div class="panel receipt">
-      <div class="receipt-head">
-        <span class="label">PHOTO DETAILS</span>
-        <h3>Specifications</h3>
-      </div>
-      <div id="receiptBody">
-        <div class="empty-receipt">Upload a photo to view its output specifications.</div>
-      </div>
-      <div class="receipt-foot">
-        <div class="download-label">Download Photo</div>
-        <div class="download-row">
-          <button class="dl-btn" id="dlJpg" title="Download the processed photo as a JPG file" aria-label="Download photo as JPG" disabled>JPG</button>
-          <button class="dl-btn" id="dlPng" title="Download the processed photo as a PNG file" aria-label="Download photo as PNG" disabled>PNG</button>
-          <button class="dl-btn" id="dlPdf" title="Download the processed photo as a PDF file" aria-label="Download photo as PDF" disabled>PDF</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Wide before/after preview appears after a photo is selected -->
   <section class="panel preview-panel" aria-label="Photo preview">
     <div class="preview-panel-head">
       <div><span class="label">IMAGE WORKSPACE</span><h3>Photo Preview</h3></div>
@@ -1428,6 +1455,30 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid rgba(
       <div class="photo-nav"><button class="change-photo" id="changeBtn" type="button">Choose photo(s)</button><span id="queuePosition" class="queue-position" aria-live="polite" aria-atomic="true">No photos queued</span><button class="next-photo" id="nextPhotoBtn" type="button" disabled>Next Photo →</button></div>
     </div>
   </section>
+
+    <!-- Specifications remain beside the upload workspace -->
+    <!-- Compact specifications panel restored -->
+    <div class="panel receipt">
+      <div class="receipt-head">
+        <span class="label">PHOTO DETAILS</span>
+        <h3>Specifications</h3>
+      </div>
+      <div id="receiptBody">
+        <div class="empty-receipt">Upload a photo to view its output specifications.</div>
+      </div>
+      <div class="receipt-foot">
+        <div class="download-label">Download Photo</div>
+        <div class="download-row">
+          <button class="dl-btn" id="dlJpg" title="Download the processed photo as a JPG file" aria-label="Download photo as JPG" disabled>JPG</button>
+          <button class="dl-btn" id="dlPng" title="Download the processed photo as a PNG file" aria-label="Download photo as PNG" disabled>PNG</button>
+          <button class="dl-btn" id="dlPdf" title="Download the processed photo as a PDF file" aria-label="Download photo as PDF" disabled>PDF</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Wide before/after preview appears after a photo is selected -->
+
 
 </main>
 
