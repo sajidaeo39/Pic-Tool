@@ -91,6 +91,51 @@
     return faceLandmarkerLoadPromise;
   }
 
+  // Automatically frame a detected face with the upper body for a 3:4 passport-style crop.
+  // If face detection fails, leave the source image untouched.
+  window.__autoCropUpperBody = async function(imgEl) {
+    try {
+      const detector = await getFaceLandmarker();
+      const result = detector.detect(imgEl);
+      const landmarks = result && result.faceLandmarks && result.faceLandmarks[0];
+      if (!landmarks || !landmarks.length) return { image: imgEl, cropped: false };
+
+      const w = imgEl.naturalWidth || imgEl.width;
+      const h = imgEl.naturalHeight || imgEl.height;
+      const xs = landmarks.map(p => p.x * w);
+      const ys = landmarks.map(p => p.y * h);
+      const faceLeft = Math.min(...xs), faceRight = Math.max(...xs);
+      const faceTop = Math.min(...ys), faceBottom = Math.max(...ys);
+      const faceW = faceRight - faceLeft, faceH = faceBottom - faceTop;
+      if (!(faceW > 8 && faceH > 8)) return { image: imgEl, cropped: false };
+
+      // A little over four face-widths keeps the head, shoulders, chest and
+      // a useful portion of both arms in frame without retaining the full body.
+      let cropW = Math.min(w, Math.max(faceW * 4.15, faceH * 3.6));
+      let cropH = cropW * 4 / 3;
+      if (cropH > h) {
+        cropH = h;
+        cropW = cropH * 3 / 4;
+      }
+
+      const faceCenterX = (faceLeft + faceRight) / 2;
+      let sx = faceCenterX - cropW / 2;
+      let sy = faceTop - faceH * 0.38;
+      sx = Math.max(0, Math.min(w - cropW, sx));
+      sy = Math.max(0, Math.min(h - cropH, sy));
+
+      const croppedCanvas = document.createElement("canvas");
+      croppedCanvas.width = Math.max(1, Math.round(cropW));
+      croppedCanvas.height = Math.max(1, Math.round(cropH));
+      const cropCtx = croppedCanvas.getContext("2d");
+      cropCtx.drawImage(imgEl, sx, sy, cropW, cropH, 0, 0, croppedCanvas.width, croppedCanvas.height);
+      return { image: croppedCanvas, cropped: true };
+    } catch (error) {
+      console.warn("Automatic upper-body crop unavailable; using the full photo.", error);
+      return { image: imgEl, cropped: false };
+    }
+  };
+
   // Correct only a modest in-plane head tilt when both eye corners are detected.
   // If detection is unavailable or the angle is too large, keep the source unchanged.
   window.__straightenImage = async function(imgEl) {
@@ -2251,6 +2296,7 @@ function handleFile(file){
   nextPhotoBtn.textContent = photoIndex < photoQueue.length - 1 ? 'Next Photo →' : 'All Photos Done';
   bgRemovalSucceeded = false;
   window.__faceAlignmentApplied = false;
+  window.__autoCropApplied = false;
 
   dzInner.style.display = 'none';
   previewWrap.classList.add('active');
@@ -2270,8 +2316,13 @@ function handleFile(file){
   const fallbackToOriginal = (msg) => {
     bgRemovalSucceeded = false;
     processingText.textContent = msg;
-    blobToImage(file).then((img) => {
-      processImage(img, null);
+    blobToImage(file).then(async (img) => {
+      processingText.textContent = "Framing face and upper body…";
+      const crop = typeof window.__autoCropUpperBody === "function"
+        ? await withTimeout(window.__autoCropUpperBody(img), 18000).catch(() => ({ image: img, cropped: false }))
+        : { image: img, cropped: false };
+      window.__autoCropApplied = !!crop.cropped;
+      processImage(crop.image || img, null);
     }).catch(() => {
       processingText.textContent = "Couldn't read this photo — please try a different file.";
     });
@@ -2289,12 +2340,18 @@ function handleFile(file){
           alignedImage = alignment.image || smallImg;
           window.__faceAlignmentApplied = !!alignment.corrected;
         }
+        processingText.textContent = "Auto-cropping face and upper body…";
+        const crop = typeof window.__autoCropUpperBody === "function"
+          ? await withTimeout(window.__autoCropUpperBody(alignedImage), 18000).catch(() => ({ image: alignedImage, cropped: false }))
+          : { image: alignedImage, cropped: false };
+        const framedImage = crop.image || alignedImage;
+        window.__autoCropApplied = !!crop.cropped;
         processingText.textContent = "Removing background…";
         // Hard 25s timeout — if the model hasn't responded by then
         // (slow device or a stuck WASM run), give up gracefully instead of
         // leaving the user staring at a spinner forever.
-        return withTimeout(window.__segmentPerson(alignedImage), 25000)
-          .then((maskResult) => ({ smallImg: alignedImage, maskResult }));
+        return withTimeout(window.__segmentPerson(framedImage), 25000)
+          .then((maskResult) => ({ smallImg: framedImage, maskResult }));
       });
 
     // Absolute outer safety net: covers downscaling + segmentation together,
