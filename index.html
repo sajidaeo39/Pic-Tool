@@ -1579,6 +1579,75 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid rgba(
 }
 </style>
 
+
+<style id="final-spacing-and-typography">
+/* Reduce the gap between the six header cards and the image workspace */
+.header-links{margin-bottom:2px!important}
+.header-links + .hero:empty{display:none!important}
+main{padding-top:5px!important}
+
+/* Center both workspace headings and use one consistent typography system */
+.preview-panel-head{
+ display:flex!important;
+ justify-content:center!important;
+ align-items:center!important;
+ text-align:center!important;
+ padding:11px 14px!important;
+}
+.preview-panel-head>div{
+ width:100%!important;
+ text-align:center!important;
+}
+.preview-panel-head .label,
+.receipt-head .label{
+ display:block!important;
+ margin:0 0 3px!important;
+ font-family:Inter,"Segoe UI",Arial,sans-serif!important;
+ font-size:.68rem!important;
+ font-weight:750!important;
+ letter-spacing:.07em!important;
+ line-height:1.2!important;
+ text-align:center!important;
+}
+.preview-panel-head h3,
+.receipt-head h3{
+ display:block!important;
+ margin:0!important;
+ font-family:Inter,"Segoe UI",Arial,sans-serif!important;
+ font-size:1rem!important;
+ font-weight:800!important;
+ letter-spacing:0!important;
+ line-height:1.25!important;
+ text-align:center!important;
+}
+.preview-panel-note{display:none!important}
+.receipt-head{
+ display:flex!important;
+ flex-direction:column!important;
+ justify-content:center!important;
+ align-items:center!important;
+ text-align:center!important;
+ padding:11px 14px!important;
+}
+.receipt-head>*{text-align:center!important}
+
+/* Keep workspace data typography consistent */
+.preview-panel,.receipt,.preview-panel button,.receipt button,
+.preview-panel .processing-row,.receipt .r-row,
+.receipt .empty-receipt,.receipt .download-label{
+ font-family:Inter,"Segoe UI",Arial,sans-serif!important;
+}
+.receipt .r-row,.receipt .empty-receipt{font-size:.76rem!important;line-height:1.4!important}
+.receipt .download-label{font-size:.65rem!important;font-weight:750!important;letter-spacing:.06em!important}
+@media(max-width:700px){
+ main{padding-top:3px!important}
+ .header-links{margin-bottom:0!important}
+ .preview-panel-head,.receipt-head{padding:9px 10px!important}
+ .preview-panel-head h3,.receipt-head h3{font-size:.92rem!important}
+ .preview-panel-head .label,.receipt-head .label{font-size:.62rem!important}
+}
+</style>
+
 </head>
 <body>
 
