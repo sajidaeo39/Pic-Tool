@@ -91,45 +91,34 @@
     return faceLandmarkerLoadPromise;
   }
 
-  // Automatically frame a detected face with the upper body for a 3:4 passport-style crop.
-  // If face detection fails, leave the source image untouched.
+  // Smart 3:4 upper-body crop with adjustable framing controls.
   window.__autoCropUpperBody = async function(imgEl) {
     try {
       const detector = await getFaceLandmarker();
       const result = detector.detect(imgEl);
       const landmarks = result && result.faceLandmarks && result.faceLandmarks[0];
       if (!landmarks || !landmarks.length) return { image: imgEl, cropped: false };
-
-      const w = imgEl.naturalWidth || imgEl.width;
-      const h = imgEl.naturalHeight || imgEl.height;
-      const xs = landmarks.map(p => p.x * w);
-      const ys = landmarks.map(p => p.y * h);
+      const w = imgEl.naturalWidth || imgEl.width, h = imgEl.naturalHeight || imgEl.height;
+      const xs = landmarks.map(p => p.x * w), ys = landmarks.map(p => p.y * h);
       const faceLeft = Math.min(...xs), faceRight = Math.max(...xs);
       const faceTop = Math.min(...ys), faceBottom = Math.max(...ys);
       const faceW = faceRight - faceLeft, faceH = faceBottom - faceTop;
       if (!(faceW > 8 && faceH > 8)) return { image: imgEl, cropped: false };
-
-      // A little over four face-widths keeps the head, shoulders, chest and
-      // a useful portion of both arms in frame without retaining the full body.
-      let cropW = Math.min(w, Math.max(faceW * 4.15, faceH * 3.6));
+      const zoom = Math.max(3.4, Math.min(5.6, Number(window.__cropZoom) || 4.65));
+      const horizontal = Math.max(-0.5, Math.min(0.5, Number(window.__cropHorizontal) || 0));
+      const headSpace = Math.max(0.15, Math.min(0.9, Number(window.__cropHeadSpace) || 0.55));
+      let cropW = Math.min(w, Math.max(faceW * zoom, faceH * 4.0));
       let cropH = cropW * 4 / 3;
-      if (cropH > h) {
-        cropH = h;
-        cropW = cropH * 3 / 4;
-      }
-
+      if (cropH > h) { cropH = h; cropW = cropH * 3 / 4; }
       const faceCenterX = (faceLeft + faceRight) / 2;
-      let sx = faceCenterX - cropW / 2;
-      let sy = faceTop - faceH * 0.38;
+      let sx = faceCenterX - cropW / 2 + horizontal * faceW;
+      let sy = faceTop - faceH * headSpace;
       sx = Math.max(0, Math.min(w - cropW, sx));
       sy = Math.max(0, Math.min(h - cropH, sy));
-
-      const croppedCanvas = document.createElement("canvas");
-      croppedCanvas.width = Math.max(1, Math.round(cropW));
-      croppedCanvas.height = Math.max(1, Math.round(cropH));
-      const cropCtx = croppedCanvas.getContext("2d");
-      cropCtx.drawImage(imgEl, sx, sy, cropW, cropH, 0, 0, croppedCanvas.width, croppedCanvas.height);
-      return { image: croppedCanvas, cropped: true };
+      const out = document.createElement("canvas");
+      out.width = Math.max(1, Math.round(cropW)); out.height = Math.max(1, Math.round(cropH));
+      out.getContext("2d").drawImage(imgEl, sx, sy, cropW, cropH, 0, 0, out.width, out.height);
+      return { image: out, cropped: true, faceDetected: true };
     } catch (error) {
       console.warn("Automatic upper-body crop unavailable; using the full photo.", error);
       return { image: imgEl, cropped: false };
@@ -1974,6 +1963,18 @@ document.addEventListener('DOMContentLoaded', function(){
   }
 </style>
 
+<style id="smart-auto-crop-controls">
+  .crop-adjust-panel{width:min(92%,430px);margin:14px auto 0;text-align:left;border:1px solid #dbe4ef;border-radius:11px;background:#f8fbff;padding:9px 12px}
+  .crop-adjust-panel summary{display:flex;align-items:center;justify-content:space-between;gap:8px;cursor:pointer;list-style:none;color:#1e3a5f;font-size:.78rem;font-weight:750}
+  .crop-adjust-panel summary::-webkit-details-marker{display:none}
+  .crop-adjust-panel summary small{font-size:.68rem;color:#64748b;font-weight:600}
+  .crop-adjust-grid{display:grid;grid-template-columns:1fr;gap:9px;margin-top:12px}
+  .crop-adjust-grid label{display:grid;grid-template-columns:1fr auto;gap:3px 8px;color:#334155;font-size:.72rem;font-weight:650}
+  .crop-adjust-grid output{color:#1d4ed8;font-variant-numeric:tabular-nums}
+  .crop-adjust-grid input{grid-column:1/-1;width:100%;accent-color:#2563eb;margin:2px 0}
+  .crop-adjust-panel p{font-size:.66rem!important;line-height:1.4;color:#64748b;margin:8px 0 0!important}
+  @media(min-width:801px){.crop-adjust-panel{width:min(96%,430px)}}
+</style>
 </head>
 <body>
 
@@ -2034,6 +2035,15 @@ document.addEventListener('DOMContentLoaded', function(){
               <button type="button" class="background-option" data-bg="#8EC5F0" aria-pressed="false"><span class="bg-swatch bg-blue"></span> Blue</button>
             </div>
           </div>
+          <details class="crop-adjust-panel" id="cropAdjustPanel">
+            <summary><span>✦ Auto Crop: ON</span><small>Manual framing adjustment</small></summary>
+            <div class="crop-adjust-grid">
+              <label>Framing / Zoom <output id="cropZoomValue">4.65×</output><input id="cropZoom" type="range" min="3.4" max="5.6" step="0.05" value="4.65"></label>
+              <label>Horizontal position <output id="cropHorizontalValue">Center</output><input id="cropHorizontal" type="range" min="-0.5" max="0.5" step="0.05" value="0"></label>
+              <label>Head space <output id="cropHeadSpaceValue">Medium</output><input id="cropHeadSpace" type="range" min="0.15" max="0.9" step="0.05" value="0.55"></label>
+            </div>
+            <p>Adjust these settings before choosing a photo. Auto Crop stays enabled by default.</p>
+          </details>
           <input type="file" id="fileInput" accept="image/png, image/jpeg" multiple aria-label="Choose one or more JPG or PNG photos">
         </div>
         <div class="choose-another-wrap" id="chooseAnotherWrap" hidden>
@@ -2185,6 +2195,19 @@ dropzone.addEventListener('drop', (e)=>{
 });
 
 /* ============ CORE LOGIC ============ */
+window.__cropZoom = 4.65;
+window.__cropHorizontal = 0;
+window.__cropHeadSpace = 0.55;
+const cropZoomInput = document.getElementById("cropZoom");
+const cropHorizontalInput = document.getElementById("cropHorizontal");
+const cropHeadSpaceInput = document.getElementById("cropHeadSpace");
+function updateCropControls(){
+  if(cropZoomInput){ window.__cropZoom=Number(cropZoomInput.value); document.getElementById("cropZoomValue").textContent=window.__cropZoom.toFixed(2)+"×"; }
+  if(cropHorizontalInput){ window.__cropHorizontal=Number(cropHorizontalInput.value); const v=window.__cropHorizontal; document.getElementById("cropHorizontalValue").textContent=Math.abs(v)<0.03?"Center":(v<0?"Left":"Right"); }
+  if(cropHeadSpaceInput){ window.__cropHeadSpace=Number(cropHeadSpaceInput.value); const v=window.__cropHeadSpace; document.getElementById("cropHeadSpaceValue").textContent=v<0.35?"Less":(v>0.7?"More":"Medium"); }
+}
+[cropZoomInput,cropHorizontalInput,cropHeadSpaceInput].forEach(el=>{if(el)el.addEventListener("input",updateCropControls);});
+updateCropControls();
 let bgRemovalSucceeded = false;
 let selectedBackground = "#FFFFFF";
 document.querySelectorAll(".background-option").forEach((button) => {
@@ -2489,6 +2512,7 @@ function finishUp(jpgBlob, pngBlob, quality){
       <div class="r-row"><span class="k">File size</span><span class="v ${underLimit ? 'good' : ''}">${sizeKB} KB</span></div>
       <div class="r-row"><span class="k">Background</span><span class="v ${bgRemovalSucceeded ? 'good' : ''}">${selectedBackground === "#FFFFFF" ? "White" : "Blue"} ${bgRemovalSucceeded ? "(AI removed)" : "(original may show)"}</span></div>
       <div class="r-row"><span class="k">Face alignment</span><span class="v">${window.__faceAlignmentApplied ? "Slight tilt corrected" : "No correction needed / face not detected"}</span></div>
+      <div class="r-row"><span class="k">Auto Crop</span><span class="v">${window.__autoCropApplied ? "Face & upper body framed" : "Face not detected / original framing"}</span></div>
       <div class="r-row"><span class="k">Quality used</span><span class="v muted-val">${Math.round(quality*100)}%</span></div>
       <div class="r-row"><span class="k">Status</span>
         <span class="status-chip">
