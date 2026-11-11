@@ -1648,6 +1648,55 @@ main{padding-top:5px!important}
 }
 </style>
 
+<style id="choose-another-photo-ui">
+.choose-another-wrap{
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ width:100%;
+ min-height:100%;
+ padding:18px;
+ text-align:center;
+}
+.choose-another-wrap[hidden]{display:none!important}
+.choose-another-btn{
+ display:inline-flex!important;
+ align-items:center;
+ justify-content:center;
+ min-width:190px;
+ min-height:44px;
+ padding:11px 18px!important;
+ border-radius:9px!important;
+ font-family:Inter,"Segoe UI",Arial,sans-serif!important;
+ font-size:.82rem!important;
+ font-weight:750!important;
+}
+@media(max-width:700px){
+ .choose-another-wrap{padding:14px}
+ .choose-another-btn{min-width:175px;min-height:40px;font-size:.76rem!important}
+}
+</style>
+<script id="choose-another-photo-ui-script">
+document.addEventListener('DOMContentLoaded', function(){
+ const btn=document.getElementById('chooseAnotherPhotoBtn');
+ const wrap=document.getElementById('chooseAnotherWrap');
+ const input=document.getElementById('fileInput');
+ const inner=document.getElementById('dzInner');
+ if(!btn||!wrap||!input||!inner)return;
+ btn.addEventListener('click',function(e){
+  e.preventDefault();
+  e.stopPropagation();
+  input.value='';
+  input.click();
+ });
+ const observer=new MutationObserver(function(){
+  wrap.hidden=inner.style.display!=='none';
+ });
+ observer.observe(inner,{attributes:true,attributeFilter:['style']});
+ wrap.hidden=inner.style.display!=='none';
+});
+</script>
+
 </head>
 <body>
 
@@ -1699,6 +1748,9 @@ main{padding-top:5px!important}
           <p>Click to browse or drag a photo here — JPG or PNG</p>
           <button class="pick-btn" id="pickBtn" type="button">Choose Photo</button>
           <input type="file" id="fileInput" accept="image/png, image/jpeg" multiple aria-label="Choose one or more JPG or PNG photos">
+        </div>
+        <div class="choose-another-wrap" id="chooseAnotherWrap" hidden>
+          <button class="pick-btn choose-another-btn" id="chooseAnotherPhotoBtn" type="button">Choose another photo</button>
         </div>
       </div>
     </div>
