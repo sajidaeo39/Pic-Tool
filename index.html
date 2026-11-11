@@ -1312,22 +1312,31 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid rgba(
 }
 .stats-strip .stat-box:before{top:12px!important;bottom:12px!important;width:3px!important}
 .stats-strip .stat-box:after{width:82px!important;height:82px!important;right:-22px!important;top:-28px!important}
+
+/* Keep social details and summary values compact on a single line. */
+.site-header .header-support{flex-direction:row!important;flex-wrap:nowrap!important;justify-content:center!important;gap:5px!important;white-space:nowrap!important}
+.site-header .header-support span{display:inline-flex!important;align-items:center!important;width:auto!important;max-width:none!important;overflow:visible!important;white-space:nowrap!important}
+.site-header .header-support span:first-child{font-size:.68rem!important}
+.site-header .header-support span+span{font-size:.62rem!important}
+.stats-strip .stat-box{flex-direction:row!important;justify-content:center!important;align-items:center!important;gap:8px!important;min-height:62px!important;height:62px!important;padding:7px 12px!important}
+.stats-strip .stat-num{flex:0 0 auto;font-size:1.3rem!important}
+.stats-strip .stat-label{width:auto!important;min-width:0!important;font-size:.59rem!important;line-height:1.15!important;text-align:left!important;white-space:nowrap!important;letter-spacing:0!important}
 @media(max-width:700px){
  .site-header .header-links{gap:6px!important;width:100%!important;margin-top:8px!important}
- .site-header .header-support{min-height:45px!important;padding:5px 4px!important;border-radius:8px!important}
- .site-header .header-support span:first-child{font-size:.65rem!important}
- .site-header .header-support span+span{font-size:.57rem!important}
+ .site-header .header-support{min-height:40px!important;height:40px!important;padding:4px 3px!important;border-radius:8px!important;gap:3px!important}
+ .site-header .header-support span:first-child{font-size:.58rem!important}
+ .site-header .header-support span+span{font-size:.53rem!important}
  .stats-strip{gap:6px!important;margin-top:8px!important}
- .stats-strip .stat-box{height:68px!important;min-height:68px!important;padding:6px 3px!important}
- .stats-strip .stat-num{font-size:1.18rem!important}
- .stats-strip .stat-label{font-size:.53rem!important;letter-spacing:0!important}
+ .stats-strip .stat-box{height:56px!important;min-height:56px!important;padding:5px 4px!important;gap:5px!important}
+ .stats-strip .stat-num{font-size:1.05rem!important}
+ .stats-strip .stat-label{font-size:.49rem!important;letter-spacing:0!important}
 }
 @media(max-width:360px){
  .site-header .header-links{gap:4px!important}
- .site-header .header-support span:first-child{font-size:.59rem!important}
- .site-header .header-support span+span{font-size:.52rem!important}
- .stats-strip .stat-label{font-size:.49rem!important}
- .stats-strip .stat-num{font-size:1.08rem!important}
+ .site-header .header-support span:first-child{font-size:.53rem!important}
+ .site-header .header-support span+span{font-size:.48rem!important}
+ .stats-strip .stat-label{font-size:.45rem!important}
+ .stats-strip .stat-num{font-size:1rem!important}
 }
 
 /* Desktop workspace: Upload, Before/After preview and Specifications in one balanced row. */
