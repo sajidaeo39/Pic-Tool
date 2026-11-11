@@ -1693,17 +1693,17 @@ document.addEventListener('DOMContentLoaded', function(){
 </script>
 
 <style id="equal-width-tool-panels">
-/* Match the three processing panels to the compact three-column header cards. */
+/* Match each processing panel exactly to the width of the six header cards. */
 @media(min-width:801px){
  main{
-  width:min(100%,720px)!important;
-  max-width:720px!important;
+  width:min(100%,690px)!important;
+  max-width:690px!important;
   padding-left:0!important;
   padding-right:0!important;
  }
  .tool-grid{
   grid-template-columns:repeat(3,minmax(0,1fr))!important;
-  gap:10px!important;
+  gap:9px!important;
   align-items:stretch!important;
  }
  .tool-grid>.panel{
