@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Photo Resizer &amp; White Background Tool | The Educational Helper</title>
-<meta name="description" content="Resize photos to 600×800, prepare a clean white background, and download as JPG, PNG, or PDF with this free photo tool.">
+<title>Passport Photo Tool – Background &amp; Face Alignment | The Educational Helper</title>
+<meta name="description" content="Prepare 600×800 passport-size photos with AI background removal, white or light-blue backgrounds, and automatic slight face-tilt correction.">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,10 +13,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script type="module">
-  import { FilesetResolver, ImageSegmenter } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision/vision_bundle.mjs";
+  import { FilesetResolver, ImageSegmenter, FaceLandmarker } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision/vision_bundle.mjs";
 
   let segmenterInstance = null;
   let segmenterLoadPromise = null;
+  let faceLandmarkerInstance = null;
+  let faceLandmarkerLoadPromise = null;
 
   function getSegmenter() {
     if (segmenterInstance) return Promise.resolve(segmenterInstance);
@@ -67,6 +69,79 @@
         }
       });
     });
+  };
+
+  function getFaceLandmarker() {
+    if (faceLandmarkerInstance) return Promise.resolve(faceLandmarkerInstance);
+    if (!faceLandmarkerLoadPromise) {
+      faceLandmarkerLoadPromise = FilesetResolver.forVisionTasks(
+        "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision/wasm"
+      ).then((vision) => FaceLandmarker.createFromOptions(vision, {
+        baseOptions: {
+          modelAssetPath: "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task",
+          delegate: "CPU"
+        },
+        runningMode: "IMAGE",
+        numFaces: 1
+      })).then((detector) => {
+        faceLandmarkerInstance = detector;
+        return detector;
+      });
+    }
+    return faceLandmarkerLoadPromise;
+  }
+
+  // Correct only a modest in-plane head tilt when both eye corners are detected.
+  // If detection is unavailable or the angle is too large, keep the source unchanged.
+  window.__straightenImage = async function(imgEl) {
+    try {
+      const detector = await getFaceLandmarker();
+      const result = detector.detect(imgEl);
+      const landmarks = result && result.faceLandmarks && result.faceLandmarks[0];
+      if (!landmarks || landmarks.length < 264) return { image: imgEl, corrected: false, angle: 0 };
+
+      const midpoint = (a, b) => ({
+        x: (landmarks[a].x + landmarks[b].x) / 2,
+        y: (landmarks[a].y + landmarks[b].y) / 2
+      });
+      const eyeA = midpoint(33, 133);
+      const eyeB = midpoint(362, 263);
+      const dx = eyeB.x - eyeA.x;
+      const dy = eyeB.y - eyeA.y;
+      if (dx <= 0.05) return { image: imgEl, corrected: false, angle: 0 };
+
+      const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+      if (!Number.isFinite(angle) || Math.abs(angle) < 2 || Math.abs(angle) > 25) {
+        return { image: imgEl, corrected: false, angle };
+      }
+
+      const radians = -angle * Math.PI / 180;
+      const w = imgEl.naturalWidth || imgEl.width;
+      const h = imgEl.naturalHeight || imgEl.height;
+      const outW = Math.ceil(Math.abs(w * Math.cos(radians)) + Math.abs(h * Math.sin(radians)));
+      const outH = Math.ceil(Math.abs(h * Math.cos(radians)) + Math.abs(w * Math.sin(radians)));
+      const rotated = document.createElement("canvas");
+      rotated.width = outW;
+      rotated.height = outH;
+      const rctx = rotated.getContext("2d");
+      rctx.translate(outW / 2, outH / 2);
+      rctx.rotate(radians);
+      rctx.drawImage(imgEl, -w / 2, -h / 2, w, h);
+
+      const blob = await new Promise((resolve) => rotated.toBlob(resolve, "image/jpeg", 0.94));
+      if (!blob) return { image: imgEl, corrected: false, angle };
+      const url = URL.createObjectURL(blob);
+      const correctedImage = await new Promise((resolve, reject) => {
+        const image = new Image();
+        image.onload = () => resolve(image);
+        image.onerror = reject;
+        image.src = url;
+      });
+      return { image: correctedImage, corrected: true, angle };
+    } catch (error) {
+      console.warn("Automatic face alignment unavailable; continuing without rotation.", error);
+      return { image: imgEl, corrected: false, angle: 0 };
+    }
   };
 
   window.__bgModuleLoaded = true;
@@ -1828,6 +1903,15 @@ document.addEventListener('DOMContentLoaded', function(){
   }
 </style>
 
+  <style id="passport-background-controls">
+    .background-choice{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;padding:10px 8px 2px}
+    .background-choice-label{font-size:.76rem;font-weight:700;color:#475569;margin-right:4px}
+    .background-option{display:inline-flex;align-items:center;gap:6px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#334155;padding:6px 11px;font:600 .75rem Inter, sans-serif;cursor:pointer}
+    .background-option.is-selected{border-color:#2563eb;background:#eff6ff;color:#1d4ed8;box-shadow:0 0 0 1px #2563eb inset}
+    .bg-swatch{width:14px;height:14px;border-radius:50%;border:1px solid #cbd5e1;display:inline-block}
+    .bg-white{background:#fff}.bg-blue{background:#8EC5F0}
+    @media(max-width:600px){.background-choice{padding:9px 4px 2px}.background-option{padding:6px 9px}}
+  </style>
 </head>
 <body>
 
@@ -1886,6 +1970,11 @@ document.addEventListener('DOMContentLoaded', function(){
         <div class="choose-another-wrap" id="chooseAnotherWrap" hidden>
           <button class="pick-btn choose-another-btn" id="chooseAnotherPhotoBtn" type="button">Choose another photo</button>
         </div>
+      </div>
+      <div class="background-choice" role="group" aria-label="Choose photo background">
+        <span class="background-choice-label">Background</span>
+        <button type="button" class="background-option is-selected" data-bg="#FFFFFF" aria-pressed="true"><span class="bg-swatch bg-white"></span> White</button>
+        <button type="button" class="background-option" data-bg="#8EC5F0" aria-pressed="false"><span class="bg-swatch bg-blue"></span> Light Blue</button>
       </div>
     </div>
 
@@ -2033,6 +2122,17 @@ dropzone.addEventListener('drop', (e)=>{
 
 /* ============ CORE LOGIC ============ */
 let bgRemovalSucceeded = false;
+let selectedBackground = "#FFFFFF";
+document.querySelectorAll(".background-option").forEach((button) => {
+  button.addEventListener("click", () => {
+    selectedBackground = button.dataset.bg || "#FFFFFF";
+    document.querySelectorAll(".background-option").forEach((option) => {
+      const active = option === button;
+      option.classList.toggle("is-selected", active);
+      option.setAttribute("aria-pressed", active ? "true" : "false");
+    });
+  });
+});
 
 // Downscale very large photos before running them through the AI model.
 // Phone camera photos are often 3000-4000px wide — far more detail than a
@@ -2159,13 +2259,21 @@ function handleFile(file){
   const runRemoval = () => {
     const pipeline = downscaleForProcessing(file)
       .then((smallFile) => blobToImage(smallFile))
-      .then((smallImg) => {
+      .then(async (smallImg) => {
+        processingText.textContent = "Checking face alignment…";
+        let alignedImage = smallImg;
+        if (typeof window.__straightenImage === "function") {
+          const alignment = await withTimeout(window.__straightenImage(smallImg), 18000)
+            .catch(() => ({ image: smallImg, corrected: false, angle: 0 }));
+          alignedImage = alignment.image || smallImg;
+          window.__faceAlignmentApplied = !!alignment.corrected;
+        }
         processingText.textContent = "Removing background…";
         // Hard 25s timeout — if the model hasn't responded by then
         // (slow device or a stuck WASM run), give up gracefully instead of
         // leaving the user staring at a spinner forever.
-        return withTimeout(window.__segmentPerson(smallImg), 25000)
-          .then((maskResult) => ({ smallImg, maskResult }));
+        return withTimeout(window.__segmentPerson(alignedImage), 25000)
+          .then((maskResult) => ({ smallImg: alignedImage, maskResult }));
       });
 
     // Absolute outer safety net: covers downscaling + segmentation together,
@@ -2173,7 +2281,7 @@ function handleFile(file){
     withTimeout(pipeline, 35000)
       .then(({ smallImg, maskResult }) => {
         bgRemovalSucceeded = true;
-        processingText.textContent = "Applying white background…";
+        processingText.textContent = "Applying selected background…";
         processImage(smallImg, maskResult);
       })
       .catch((err) => {
@@ -2208,8 +2316,8 @@ function processImage(img, maskResult){
   canvas.width = TARGET_W;
   canvas.height = TARGET_H;
 
-  // 1. White background fill
-  ctx.fillStyle = "#FFFFFF";
+  // 1. Selected passport-photo background
+  ctx.fillStyle = selectedBackground;
   ctx.fillRect(0, 0, TARGET_W, TARGET_H);
 
   // 2. Fit image into 600x800 while preserving aspect ratio (contain), centered.
@@ -2301,7 +2409,8 @@ function finishUp(jpgBlob, pngBlob, quality){
     <div class="receipt-rows">
       <div class="r-row"><span class="k">Resolution</span><span class="v good">${TARGET_W} × ${TARGET_H} px</span></div>
       <div class="r-row"><span class="k">File size</span><span class="v ${underLimit ? 'good' : ''}">${sizeKB} KB</span></div>
-      <div class="r-row"><span class="k">Background</span><span class="v ${bgRemovalSucceeded ? 'good' : ''}">${bgRemovalSucceeded ? 'White (AI removed)' : 'White canvas (original background may still show)'}</span></div>
+      <div class="r-row"><span class="k">Background</span><span class="v ${bgRemovalSucceeded ? 'good' : ''}">${selectedBackground === "#FFFFFF" ? "White" : "Light Blue"} ${bgRemovalSucceeded ? "(AI removed)" : "(original may show)"}</span></div>
+      <div class="r-row"><span class="k">Face alignment</span><span class="v">${window.__faceAlignmentApplied ? "Slight tilt corrected" : "No correction needed / face not detected"}</span></div>
       <div class="r-row"><span class="k">Quality used</span><span class="v muted-val">${Math.round(quality*100)}%</span></div>
       <div class="r-row"><span class="k">Status</span>
         <span class="status-chip">
