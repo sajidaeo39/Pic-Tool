@@ -2230,6 +2230,7 @@ function handleFile(file){
   nextPhotoBtn.disabled = true;
   nextPhotoBtn.textContent = photoIndex < photoQueue.length - 1 ? 'Next Photo →' : 'All Photos Done';
   bgRemovalSucceeded = false;
+  window.__faceAlignmentApplied = false;
 
   dzInner.style.display = 'none';
   previewWrap.classList.add('active');
