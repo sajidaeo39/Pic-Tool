@@ -1912,6 +1912,23 @@ document.addEventListener('DOMContentLoaded', function(){
     .bg-white{background:#fff}.bg-blue{background:#8EC5F0}
     @media(max-width:600px){.background-choice{padding:9px 4px 2px}.background-option{padding:6px 9px}}
   </style>
+
+<style id="background-options-next-to-upload">
+  .upload-action-row{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:2px}
+  .upload-action-row .background-choice{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;padding:0;margin:0}
+  .upload-action-row .background-choice-label{font-size:.76rem;font-weight:750;color:#475569;margin:0 2px 0 0}
+  .upload-action-row .background-option{min-height:40px;padding:7px 11px;border:1px solid #cbd5e1;border-radius:9px;background:#fff;color:#334155;font:700 .76rem Inter,"Segoe UI",Arial,sans-serif;cursor:pointer}
+  .upload-action-row .background-option.is-selected{border-color:#2563eb;background:#eff6ff;color:#1d4ed8;box-shadow:0 0 0 1px #2563eb inset}
+  .upload-action-row .bg-swatch{width:14px;height:14px;border-radius:50%;border:1px solid #cbd5e1;display:inline-block}
+  .upload-action-row .bg-white{background:#fff}.upload-action-row .bg-blue{background:#8EC5F0}
+  @media(min-width:801px){.dropzone .dz-inner{padding:20px 12px!important}}
+  @media(max-width:600px){
+    .upload-action-row{gap:8px}
+    .upload-action-row .background-choice{gap:5px}
+    .upload-action-row .background-option{min-height:38px;padding:6px 9px;font-size:.72rem}
+  }
+</style>
+
 </head>
 <body>
 
@@ -1964,17 +1981,19 @@ document.addEventListener('DOMContentLoaded', function(){
           </div>
           <h3>Select Image</h3>
           <p>Click to browse or drag a photo here — JPG or PNG</p>
-          <button class="pick-btn" id="pickBtn" type="button">Choose Photo</button>
+          <div class="upload-action-row">
+            <button class="pick-btn" id="pickBtn" type="button">Choose Photo</button>
+            <div class="background-choice" role="group" aria-label="Choose photo background">
+              <span class="background-choice-label">Background</span>
+              <button type="button" class="background-option is-selected" data-bg="#FFFFFF" aria-pressed="true"><span class="bg-swatch bg-white"></span> White</button>
+              <button type="button" class="background-option" data-bg="#8EC5F0" aria-pressed="false"><span class="bg-swatch bg-blue"></span> Blue</button>
+            </div>
+          </div>
           <input type="file" id="fileInput" accept="image/png, image/jpeg" multiple aria-label="Choose one or more JPG or PNG photos">
         </div>
         <div class="choose-another-wrap" id="chooseAnotherWrap" hidden>
           <button class="pick-btn choose-another-btn" id="chooseAnotherPhotoBtn" type="button">Choose another photo</button>
         </div>
-      </div>
-      <div class="background-choice" role="group" aria-label="Choose photo background">
-        <span class="background-choice-label">Background</span>
-        <button type="button" class="background-option is-selected" data-bg="#FFFFFF" aria-pressed="true"><span class="bg-swatch bg-white"></span> White</button>
-        <button type="button" class="background-option" data-bg="#8EC5F0" aria-pressed="false"><span class="bg-swatch bg-blue"></span> Blue</button>
       </div>
     </div>
 
@@ -2124,7 +2143,8 @@ dropzone.addEventListener('drop', (e)=>{
 let bgRemovalSucceeded = false;
 let selectedBackground = "#FFFFFF";
 document.querySelectorAll(".background-option").forEach((button) => {
-  button.addEventListener("click", () => {
+  button.addEventListener("click", (event) => {
+    event.stopPropagation();
     selectedBackground = button.dataset.bg || "#FFFFFF";
     document.querySelectorAll(".background-option").forEach((option) => {
       const active = option === button;
