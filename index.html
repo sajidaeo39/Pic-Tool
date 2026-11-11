@@ -831,6 +831,75 @@ button:disabled{opacity:.52}
 }
 </style>
 
+
+<style>
+/* Desktop one-screen layout: centered, compact and balanced. */
+@media (min-width:1000px){
+  body{min-height:100vh;display:flex;flex-direction:column;align-items:center}
+  body>.bg-texture{position:fixed}
+  header.site-header{width:100%;flex:0 0 auto;padding:12px 18px 11px}
+  .site-header h1{font-size:1.28rem;margin-bottom:2px}
+  .site-header h2{font-size:.78rem}
+  .site-header .header-credit{margin:4px auto 1px;font-size:.68rem}
+  .site-header .header-links{margin-top:7px;gap:8px}
+  .site-header .header-support{padding:6px 12px;font-size:.7rem}
+  .hero{width:100%;max-width:1120px;padding:12px 24px 5px}
+  .hero .eyebrow{font-size:.65rem;padding:3px 10px;margin-bottom:6px}
+  .hero h2{font-size:1.85rem;line-height:1.12;margin:0 0 5px}
+  .hero p.lead{font-size:.85rem;line-height:1.4}
+  .spec-pills{margin-top:9px;gap:7px}
+  .spec-pill{font-size:.68rem;padding:4px 10px}
+  .stats-strip{margin-top:10px;gap:9px}
+  .stat-box{min-width:145px;padding:7px 17px;gap:1px;border-radius:9px}
+  .stat-num{font-size:1.3rem;line-height:1.15}
+  .stat-label{font-size:.64rem}
+  main{width:100%;max-width:1120px;margin:0 auto;padding:8px 22px 14px;flex:1 0 auto}
+  .workflow-bar{max-width:680px;margin:0 auto 9px;padding:6px 14px;gap:10px}
+  .workflow-step b{font-size:.7rem}
+  .workflow-step small{font-size:.6rem}
+  .step-number{width:25px;height:25px;font-size:.68rem}
+  .tool-grid{grid-template-columns:minmax(0,1.16fr) minmax(300px,.84fr);gap:14px;align-items:stretch}
+  .tool-grid>.panel{min-width:0;height:100%}
+  .dropzone{min-height:310px;height:100%}
+  .dropzone .dz-inner{padding:20px 18px}
+  .dz-icon{width:48px;height:48px;margin:0 auto 10px;border-radius:12px}
+  .dz-icon svg{width:23px;height:23px}
+  .dropzone h3{font-size:1.12rem;margin-bottom:4px}
+  .dropzone p{font-size:.78rem;margin-bottom:10px}
+  .pick-btn{padding:9px 20px;font-size:.82rem}
+  .preview-wrap{padding:13px}
+  .preview-container{gap:10px}
+  .preview-card{gap:5px}
+  .preview-card h4{font-size:.78rem}
+  .preview-img-frame{max-height:205px;aspect-ratio:3/4}
+  .photo-nav{margin-top:9px;gap:7px}
+  .photo-nav button{padding:7px 10px;font-size:.72rem}
+  .queue-position{font-size:.68rem}
+  .receipt-head{padding:13px 16px 8px}
+  .receipt-head h3{font-size:1.2rem}
+  #receiptBody{padding:8px 15px}
+  .empty-receipt{font-size:.78rem}
+  .receipt-foot{padding:10px 15px 13px}
+  .download-label{font-size:.72rem;margin-bottom:7px}
+  .download-row{gap:7px}
+  .receipt .dl-btn{min-height:38px;padding:8px 10px;font-size:.78rem}
+  .quick-help{max-width:100%;margin:8px auto 0}
+  .quick-help summary{padding:7px 12px;font-size:.72rem}
+  .help-content{padding:0 12px 9px;gap:8px}
+  .help-content div{padding:7px;font-size:.7rem}
+  .hint-note{max-width:100%;margin:7px auto 0;font-size:.68rem;text-align:center}
+}
+@media (min-width:1000px) and (max-height:760px){
+  .hero{padding-top:7px}
+  .hero h2{font-size:1.6rem}
+  .stats-strip{margin-top:7px}
+  .stat-box{padding:5px 14px}
+  main{padding-top:5px}
+  .dropzone{min-height:275px}
+  .preview-img-frame{max-height:175px}
+  .quick-help{margin-top:5px}
+}
+</style>
 </head>
 <body>
 
