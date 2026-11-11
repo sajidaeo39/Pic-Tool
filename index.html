@@ -1247,49 +1247,87 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid rgba(
 
 
 <style id="compact-header-workflow">
-/* Compact single-line social links and unboxed workflow */
+/* Balanced social link cards and compact, equal summary cards. */
 .site-header .header-links{
- display:flex!important;flex-direction:row!important;flex-wrap:nowrap!important;
- justify-content:center!important;align-items:center!important;gap:8px!important;
- width:max-content;max-width:100%;margin:10px auto 0!important;
+ display:grid!important;
+ grid-template-columns:repeat(3,minmax(0,1fr))!important;
+ align-items:stretch!important;
+ gap:9px!important;
+ width:min(100%,690px)!important;
+ max-width:690px!important;
+ margin:10px auto 0!important;
 }
 .site-header .header-support{
- display:inline-flex!important;flex-direction:row!important;align-items:center!important;
- justify-content:center!important;gap:5px!important;min-width:0!important;
- padding:7px 11px!important;border-radius:8px!important;
- white-space:nowrap;font-size:.69rem!important;line-height:1.2!important;
+ box-sizing:border-box!important;
+ display:flex!important;
+ flex-direction:column!important;
+ justify-content:center!important;
+ align-items:center!important;
+ gap:2px!important;
+ width:100%!important;
+ min-width:0!important;
+ min-height:48px!important;
+ padding:6px 9px!important;
+ border-radius:9px!important;
+ white-space:normal!important;
+ text-align:center!important;
+ line-height:1.2!important;
+ font-size:.72rem!important;
 }
-.site-header .header-support span{display:inline!important}
-.workflow-bar{
- display:flex!important;flex-direction:row!important;flex-wrap:nowrap!important;
- align-items:center!important;justify-content:center!important;gap:13px!important;
- width:max-content;max-width:100%;margin:0 auto 17px!important;padding:5px 0!important;
- border:0!important;border-radius:0!important;background:transparent!important;
- box-shadow:none!important;overflow-x:auto;
+.site-header .header-support span{display:block!important;max-width:100%;overflow-wrap:anywhere}
+.site-header .header-support span:first-child{font-size:.73rem!important;font-weight:750!important}
+.site-header .header-support span+span{font-size:.64rem!important;font-weight:550!important;opacity:.88}
+.stats-strip{
+ display:grid!important;
+ grid-template-columns:repeat(3,minmax(0,1fr))!important;
+ align-items:stretch!important;
+ gap:10px!important;
+ width:min(100%,720px)!important;
+ max-width:720px!important;
+ margin:10px auto 0!important;
 }
-.workflow-step{display:flex!important;flex-direction:row!important;align-items:center!important;gap:6px!important;white-space:nowrap}
-.workflow-step>span:last-child{display:flex;flex-direction:row;align-items:baseline;gap:5px}
-.workflow-step b{font-size:.76rem!important;font-weight:800!important}
-.workflow-step small{display:inline!important;font-size:.68rem!important;color:#71808b!important}
-.step-number{width:25px!important;height:25px!important;flex:0 0 25px!important;border-radius:50%!important;font-size:.68rem!important}
-.step-connector{width:20px!important;flex:0 0 20px!important;height:1px!important;background:#cbd6dc!important}
-@media(max-width:600px){
- .site-header .header-links{width:100%;gap:5px!important}
- .site-header .header-support{padding:7px 7px!important;font-size:.61rem!important;gap:3px!important}
- .workflow-bar{width:100%;gap:6px!important;justify-content:center!important;padding:4px 0!important}
- .workflow-step{gap:4px!important}
- .workflow-step>span:last-child{gap:3px}
- .workflow-step b{font-size:.65rem!important}
- .workflow-step small{font-size:.57rem!important}
- .step-number{width:22px!important;height:22px!important;flex-basis:22px!important;font-size:.62rem!important}
- .step-connector{width:9px!important;flex-basis:9px!important}
+.stats-strip .stat-box{
+ box-sizing:border-box!important;
+ display:flex!important;
+ flex-direction:column!important;
+ justify-content:center!important;
+ align-items:center!important;
+ width:100%!important;
+ min-width:0!important;
+ min-height:76px!important;
+ height:76px!important;
+ padding:8px 10px!important;
+ gap:4px!important;
+ border-radius:11px!important;
+ text-align:center!important;
 }
-@media(max-width:370px){
- .site-header .header-support{font-size:.56rem!important;padding:6px 5px!important}
- .workflow-bar{gap:4px!important}
- .workflow-step b{font-size:.6rem!important}
- .workflow-step small{font-size:.52rem!important}
- .step-connector{width:5px!important;flex-basis:5px!important}
+.stats-strip .stat-num{font-size:1.42rem!important;line-height:1.05!important}
+.stats-strip .stat-label{
+ width:100%!important;
+ font-size:.61rem!important;
+ line-height:1.25!important;
+ letter-spacing:.035em!important;
+ text-align:center!important;
+ overflow-wrap:anywhere;
+}
+.stats-strip .stat-box:before{top:12px!important;bottom:12px!important;width:3px!important}
+.stats-strip .stat-box:after{width:82px!important;height:82px!important;right:-22px!important;top:-28px!important}
+@media(max-width:700px){
+ .site-header .header-links{gap:6px!important;width:100%!important;margin-top:8px!important}
+ .site-header .header-support{min-height:45px!important;padding:5px 4px!important;border-radius:8px!important}
+ .site-header .header-support span:first-child{font-size:.65rem!important}
+ .site-header .header-support span+span{font-size:.57rem!important}
+ .stats-strip{gap:6px!important;margin-top:8px!important}
+ .stats-strip .stat-box{height:68px!important;min-height:68px!important;padding:6px 3px!important}
+ .stats-strip .stat-num{font-size:1.18rem!important}
+ .stats-strip .stat-label{font-size:.53rem!important;letter-spacing:0!important}
+}
+@media(max-width:360px){
+ .site-header .header-links{gap:4px!important}
+ .site-header .header-support span:first-child{font-size:.59rem!important}
+ .site-header .header-support span+span{font-size:.52rem!important}
+ .stats-strip .stat-label{font-size:.49rem!important}
+ .stats-strip .stat-num{font-size:1.08rem!important}
 }
 </style>
 
@@ -1328,13 +1366,6 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid rgba(
 </section>
 
 <main>
-  <div class="workflow-bar" aria-label="Photo workflow">
-    <div class="workflow-step is-current" data-step="1"><span class="step-number">1</span><span><b>Upload</b><small>Choose photo</small></span></div>
-    <span class="step-connector"></span>
-    <div class="workflow-step" data-step="2"><span class="step-number">2</span><span><b>Review</b><small>Check preview</small></span></div>
-    <span class="step-connector"></span>
-    <div class="workflow-step" data-step="3"><span class="step-number">3</span><span><b>Download</b><small>Save your file</small></span></div>
-  </div>
   <div class="tool-grid">
 
 
