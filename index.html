@@ -602,6 +602,94 @@
     .tool-grid>.panel{min-width:0}
     .receipt{min-height:0}
   }
+
+  /* MCQ Portal-style branded header and support links */
+  header.site-header{
+    display:block;
+    position:relative;
+    top:auto;
+    z-index:20;
+    padding:20px 12px;
+    text-align:center;
+    color:#fff;
+    background:#1e3a8a;
+    border:0;
+    border-bottom:3px solid #3b82f6;
+    box-shadow:0 4px 10px rgba(0,0,0,.14);
+    backdrop-filter:none;
+  }
+  .site-header h1{
+    margin:0 0 5px;
+    color:#fff;
+    font-family:'Inter',sans-serif;
+    font-size:clamp(1.05rem,2.5vw,1.5rem);
+    font-weight:700;
+    line-height:1.35;
+    letter-spacing:.3px;
+    text-transform:uppercase;
+  }
+  .site-header h2{
+    margin:0;
+    color:#dcebf3;
+    font-family:'Inter',sans-serif;
+    font-size:.9rem;
+    font-weight:400;
+    letter-spacing:.15px;
+  }
+  .site-header .header-credit{
+    position:relative;
+    margin:8px auto 3px;
+    color:#e6f1f6;
+    font-family:'Inter',sans-serif;
+    font-size:.76rem;
+    line-height:1.5;
+  }
+  .site-header .header-links{
+    position:relative;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:9px;
+    margin:12px auto 0;
+    max-width:760px;
+  }
+  .site-header .header-support{
+    display:inline-block;
+    margin:0;
+    padding:8px 14px;
+    border:1px solid rgba(255,255,255,.35);
+    border-radius:999px;
+    color:#fff;
+    text-decoration:none;
+    font-family:'Inter',sans-serif;
+    font-size:.78rem;
+    font-weight:700;
+    line-height:1.35;
+    background:rgba(255,255,255,.10);
+    transition:transform .18s,background .18s;
+  }
+  .site-header .header-support span{display:block}
+  .site-header .header-support:hover{
+    transform:translateY(-1px);
+    background:rgba(255,255,255,.22);
+    text-decoration:none;
+  }
+  .site-header .whatsapp-channel-link{
+    background:#e8fff2;
+    color:#12643e;
+    border-color:#b9f0d0;
+  }
+  .site-header .whatsapp-channel-link:hover{background:#d6f8e5}
+  @media(max-width:600px){
+    header.site-header{padding:12px 9px}
+    .site-header h1{font-size:1rem;letter-spacing:.2px}
+    .site-header h2{font-size:.75rem}
+    .site-header .header-credit{font-size:.65rem;padding:0 4px}
+    .site-header .header-links{gap:6px;margin-top:9px}
+    .site-header .header-support{font-size:.67rem;padding:6px 9px}
+  }
+
 </style>
 
 <style>
@@ -748,20 +836,16 @@ button:disabled{opacity:.52}
 
 <div class="bg-texture"></div>
 
-<header>
-  <div class="brand">
-    <div class="brand-mark">
-      <svg viewBox="0 0 24 24" fill="none"><path d="M4 19V6a2 2 0 0 1 2-2h11l3 3v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z" stroke="#F7F4ED" stroke-width="1.6"/><path d="M8 9h6M8 13h8" stroke="#F7F4ED" stroke-width="1.6" stroke-linecap="round"/></svg>
-    </div>
-    <div class="brand-text">
-      <h1>Sajid The Educational Helper</h1>
-      <span>Photo Spec Tool</span>
-    </div>
+<header class="site-header">
+  <h1>Photo Resizer &amp; White Background Tool</h1>
+  <h2>Resize • Edit • Download</h2>
+  <p class="header-credit"><strong>Developed by: M.Sajid (A.E.O) | The Educational Helper</strong></p>
+  <p class="header-credit">Okara</p>
+  <div class="header-links">
+    <a class="header-support whatsapp-channel-link" href="https://whatsapp.com/channel/0029VaoMfR3C6ZvYxRXWod3G" target="_blank" rel="noopener noreferrer"><span>🟢 Follow</span><span>WhatsApp Channel</span></a>
+    <a class="header-support" href="https://wa.me/923496027086" target="_blank" rel="noopener noreferrer"><span>💬 WhatsApp Support</span><span>0349 6027086</span></a>
+    <a class="header-support" id="ytLink" href="https://youtube.com/@sajideducationalhelper" target="_blank" rel="noopener noreferrer"><span>▶ YouTube</span><span>Updates</span></a>
   </div>
-  <a class="yt-link" id="ytLink" href="#" target="_blank" rel="noopener">
-    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.6 31.6 0 0 0 0 12a31.6 31.6 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.6 31.6 0 0 0 24 12a31.6 31.6 0 0 0-.5-5.8ZM9.6 15.5V8.5L15.8 12Z"/></svg>
-    Subscribe for More Information
-  </a>
 </header>
 
 <section class="hero">
