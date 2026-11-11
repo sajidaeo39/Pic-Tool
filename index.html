@@ -1,12 +1,4 @@
-<!DOCTYP
-
-<section class="header-links" aria-label="Social media and photo summary">
-    <a class="header-support whatsapp-channel-link" href="https://whatsapp.com/channel/0029VaoMfR3C6ZvYxRXWod3G" target="_blank" rel="noopener noreferrer"><span>🟢 Follow</span><span>WhatsApp Channel</span></a>
-    <a class="header-support" href="https://wa.me/923496027086" target="_blank" rel="noopener noreferrer"><span>💬 WhatsApp Support</span><span>0349 6027086</span></a>
-    <a class="header-support" id="ytLink" href="https://youtube.com/@sajideducationalhelper" target="_blank" rel="noopener noreferrer"><span>▶ YouTube</span><span>Updates</span></a>
-<div class="header-support stat-box">
-      <span class="summary-inline"><strong id="statTotal">—</strong><span>Total Photos</span></span>
-  </section>E html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -1495,29 +1487,28 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid rgba(
 
 
 <style id="six-unified-header-cards">
-/* Six matching cards placed directly below the title header */
+/* Six equal two-line cards directly below the title header */
 .header-links{
  display:grid!important;
  grid-template-columns:repeat(6,minmax(0,1fr))!important;
  gap:9px!important;
  width:min(calc(100% - 32px),1180px)!important;
  max-width:1180px!important;
- margin:12px auto 14px!important;
+ margin:12px auto 16px!important;
  align-items:stretch!important;
 }
-.header-links .header-support,
-.header-links .stat-box{
+.header-links .header-support{
  box-sizing:border-box!important;
  display:flex!important;
  flex-direction:column!important;
  align-items:center!important;
  justify-content:center!important;
- gap:4px!important;
+ gap:5px!important;
  width:100%!important;
  min-width:0!important;
- height:56px!important;
- min-height:56px!important;
- padding:6px 8px!important;
+ height:62px!important;
+ min-height:62px!important;
+ padding:7px 8px!important;
  border:1px solid #d7e2ec!important;
  border-radius:10px!important;
  background:#fff!important;
@@ -1531,16 +1522,18 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid rgba(
 }
 .header-links .header-support span{
  display:block!important;
+ width:100%!important;
  max-width:100%!important;
- overflow-wrap:anywhere!important;
  text-align:center!important;
+ overflow-wrap:anywhere!important;
+ white-space:normal!important;
 }
 .header-links .header-support span:first-child{
- font-size:.72rem!important;
+ font-size:.73rem!important;
  font-weight:750!important;
 }
 .header-links .header-support span+span{
- font-size:.65rem!important;
+ font-size:.66rem!important;
  font-weight:600!important;
  opacity:.85!important;
 }
@@ -1554,21 +1547,22 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid rgba(
  flex-direction:column!important;
  align-items:center!important;
  justify-content:center!important;
- gap:4px!important;
+ gap:5px!important;
  width:100%!important;
  white-space:normal!important;
 }
 .header-links .stat-box strong{
  display:block!important;
  font-family:'Inter',sans-serif!important;
- font-size:1rem!important;
+ font-size:1.05rem!important;
  font-weight:800!important;
  color:inherit!important;
  line-height:1!important;
 }
 .header-links .stat-box .summary-inline span{
  display:block!important;
- font-size:.65rem!important;
+ width:100%!important;
+ font-size:.66rem!important;
  font-weight:650!important;
  line-height:1.1!important;
  text-align:center!important;
@@ -1577,11 +1571,11 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid rgba(
  .header-links{grid-template-columns:repeat(3,minmax(0,1fr))!important}
 }
 @media(max-width:520px){
- .header-links{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:7px!important;width:calc(100% - 20px)!important;margin:9px auto 12px!important}
- .header-links .header-support,.header-links .stat-box{height:50px!important;min-height:50px!important;padding:5px!important}
+ .header-links{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:7px!important;width:calc(100% - 20px)!important;margin:9px auto 13px!important}
+ .header-links .header-support{height:56px!important;min-height:56px!important;padding:5px!important;gap:4px!important}
  .header-links .header-support span:first-child{font-size:.65rem!important}
  .header-links .header-support span+span,.header-links .stat-box .summary-inline span{font-size:.58rem!important}
- .header-links .stat-box strong{font-size:.88rem!important}
+ .header-links .stat-box strong{font-size:.9rem!important}
 }
 </style>
 
@@ -1594,15 +1588,28 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid rgba(
   <h1>Photo Resizer &amp; White Background Tool</h1>
   <h2>Resize • Edit • Download</h2>
   <p class="header-credit"><strong>Developed by: M.Sajid (A.E.O) | The Educational Helper</strong></p>
+</header>
 
-    <div class="header-support stat-box">
-      <span class="summary-inline"><strong id="statToday">—</strong><span>Today</span></span>
-    </div>
-    <div class="header-support stat-box">
-      <span class="summary-inline"><strong id="statSession">0</strong><span>Your Session</span></span>
-    </div>
+<section class="header-links" aria-label="Social media and photo summary">
+  <a class="header-support whatsapp-channel-link" href="https://whatsapp.com/channel/0029VaoMfR3C6ZvYxRXWod3G" target="_blank" rel="noopener noreferrer">
+    <span>🟢 Follow</span><span>WhatsApp Channel</span>
+  </a>
+  <a class="header-support" href="https://wa.me/923496027086" target="_blank" rel="noopener noreferrer">
+    <span>💬 WhatsApp Support</span><span>0349 6027086</span>
+  </a>
+  <a class="header-support" id="ytLink" href="https://youtube.com/@sajideducationalhelper" target="_blank" rel="noopener noreferrer">
+    <span>▶ YouTube</span><span>Updates</span>
+  </a>
+  <div class="header-support stat-box">
+    <span class="summary-inline"><strong id="statTotal">—</strong><span>Total Photos</span></span>
   </div>
-
+  <div class="header-support stat-box">
+    <span class="summary-inline"><strong id="statToday">—</strong><span>Today</span></span>
+  </div>
+  <div class="header-support stat-box">
+    <span class="summary-inline"><strong id="statSession">0</strong><span>Your Session</span></span>
+  </div>
+</section>
 
 <section class="hero">
 
