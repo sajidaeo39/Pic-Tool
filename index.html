@@ -1974,7 +1974,7 @@ document.addEventListener('DOMContentLoaded', function(){
       <div class="background-choice" role="group" aria-label="Choose photo background">
         <span class="background-choice-label">Background</span>
         <button type="button" class="background-option is-selected" data-bg="#FFFFFF" aria-pressed="true"><span class="bg-swatch bg-white"></span> White</button>
-        <button type="button" class="background-option" data-bg="#8EC5F0" aria-pressed="false"><span class="bg-swatch bg-blue"></span> Light Blue</button>
+        <button type="button" class="background-option" data-bg="#8EC5F0" aria-pressed="false"><span class="bg-swatch bg-blue"></span> Blue</button>
       </div>
     </div>
 
@@ -2410,7 +2410,7 @@ function finishUp(jpgBlob, pngBlob, quality){
     <div class="receipt-rows">
       <div class="r-row"><span class="k">Resolution</span><span class="v good">${TARGET_W} × ${TARGET_H} px</span></div>
       <div class="r-row"><span class="k">File size</span><span class="v ${underLimit ? 'good' : ''}">${sizeKB} KB</span></div>
-      <div class="r-row"><span class="k">Background</span><span class="v ${bgRemovalSucceeded ? 'good' : ''}">${selectedBackground === "#FFFFFF" ? "White" : "Light Blue"} ${bgRemovalSucceeded ? "(AI removed)" : "(original may show)"}</span></div>
+      <div class="r-row"><span class="k">Background</span><span class="v ${bgRemovalSucceeded ? 'good' : ''}">${selectedBackground === "#FFFFFF" ? "White" : "Blue"} ${bgRemovalSucceeded ? "(AI removed)" : "(original may show)"}</span></div>
       <div class="r-row"><span class="k">Face alignment</span><span class="v">${window.__faceAlignmentApplied ? "Slight tilt corrected" : "No correction needed / face not detected"}</span></div>
       <div class="r-row"><span class="k">Quality used</span><span class="v muted-val">${Math.round(quality*100)}%</span></div>
       <div class="r-row"><span class="k">Status</span>
