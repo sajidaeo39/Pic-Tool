@@ -2507,5 +2507,26 @@ loadInitialStats();
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initWorkflow);else initWorkflow();
 })();
 </script>
+
+<style id="overall-background-theme">
+/* Soft, professional page-wide background; panels and processing logic remain unchanged. */
+html,body{min-height:100%;background:#edf4fc!important}
+body{
+  background:
+    radial-gradient(ellipse at 8% 5%,rgba(116,166,220,.17),transparent 34%),
+    radial-gradient(ellipse at 94% 26%,rgba(159,190,224,.16),transparent 32%),
+    linear-gradient(135deg,#f5f9ff 0%,#edf4fc 48%,#f8fbff 100%)!important;
+  background-attachment:fixed!important;
+}
+.bg-texture{
+  position:fixed!important;inset:0!important;z-index:-1!important;pointer-events:none!important;
+  opacity:.55;
+  background-image:
+    radial-gradient(circle at 1px 1px,rgba(72,112,158,.10) 1px,transparent 0),
+    radial-gradient(ellipse at 50% 0%,rgba(255,255,255,.55),transparent 65%)!important;
+  background-size:26px 26px,100% 100%!important;
+}
+</style>
+
 </body>
 </html>
