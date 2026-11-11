@@ -736,6 +736,20 @@
     .preview-panel .preview-img-frame{aspect-ratio:3/2;max-height:280px}
   }
 
+
+<style id="bulk-download-button-style">
+.bulk-download-btn{
+ display:inline-flex!important;align-items:center;justify-content:center;
+ min-height:36px;padding:8px 12px;border:1px solid #147d78;border-radius:8px;
+ background:#147d78;color:#fff;font:700 .74rem Inter,"Segoe UI",Arial,sans-serif;
+ cursor:pointer;white-space:nowrap;
+}
+.bulk-download-btn:disabled{opacity:.5;cursor:not-allowed}
+.bulk-download-btn:not(:disabled):hover{background:#0e625e}
+@media(max-width:700px){
+ .photo-nav .bulk-download-btn{width:100%;flex-basis:100%}
+}
+</style>
 </style>
 
 <style>
@@ -1836,7 +1850,7 @@ document.addEventListener('DOMContentLoaded', function(){
       <div class="processing-row" id="processingRow" role="status" aria-live="polite" aria-atomic="true" style="display:none;">
         <span class="spinner"></span> <span id="processingText">Processing photo…</span>
       </div>
-      <div class="photo-nav"><button class="change-photo" id="changeBtn" type="button">Choose photo(s)</button><span id="queuePosition" class="queue-position" aria-live="polite" aria-atomic="true">No photos queued</span><button class="next-photo" id="nextPhotoBtn" type="button" disabled>Next Photo →</button></div>
+      <div class="photo-nav"><button class="change-photo" id="changeBtn" type="button">Choose photo(s)</button><span id="queuePosition" class="queue-position" aria-live="polite" aria-atomic="true">No photos queued</span><button class="next-photo" id="nextPhotoBtn" type="button" disabled>Next Photo →</button><button class="bulk-download-btn" id="dlAllZip" type="button" disabled title="Download all processed photos together in one ZIP file">Download All (ZIP)</button></div>
     </div>
   </section>
 
@@ -1857,7 +1871,6 @@ document.addEventListener('DOMContentLoaded', function(){
           <button class="dl-btn" id="dlPng" title="Download the processed photo as a PNG file" aria-label="Download photo as PNG" disabled>PNG</button>
           <button class="dl-btn" id="dlPdf" title="Download the processed photo as a PDF file" aria-label="Download photo as PDF" disabled>PDF</button>
         </div>
-        <button class="dl-btn bulk-download-btn" id="dlAllZip" type="button" disabled title="Download all processed photos together in one ZIP file">Download All (ZIP)</button>
       </div>
     </div>
   </div>
