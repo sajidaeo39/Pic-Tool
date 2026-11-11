@@ -1538,6 +1538,45 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid rgba(
  .site-header .header-support span+span,.site-header .stat-box .summary-inline span{font-size:.57rem!important}
  .site-header .stat-box strong{font-size:.82rem!important}
 }
+
+/* Summary cards: value on first line, label below; both centered */
+.site-header .stat-box{
+ flex-direction:column!important;
+ align-items:center!important;
+ justify-content:center!important;
+ gap:4px!important;
+ height:50px!important;
+ min-height:50px!important;
+ padding:5px 7px!important;
+ white-space:normal!important;
+ text-align:center!important;
+}
+.site-header .stat-box .summary-inline{
+ display:flex!important;
+ flex-direction:column!important;
+ align-items:center!important;
+ justify-content:center!important;
+ gap:3px!important;
+ width:100%!important;
+ white-space:normal!important;
+ line-height:1.05!important;
+}
+.site-header .stat-box strong{
+ display:block!important;
+ font-size:.92rem!important;
+ line-height:1!important;
+}
+.site-header .stat-box .summary-inline span{
+ display:block!important;
+ font-size:.62rem!important;
+ line-height:1.05!important;
+ text-align:center!important;
+}
+@media(max-width:520px){
+ .site-header .stat-box{height:48px!important;min-height:48px!important;gap:3px!important}
+ .site-header .stat-box strong{font-size:.82rem!important}
+ .site-header .stat-box .summary-inline span{font-size:.56rem!important}
+}
 </style>
 
 </head>
