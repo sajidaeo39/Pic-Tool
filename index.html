@@ -1773,6 +1773,79 @@ document.addEventListener('DOMContentLoaded', function(){
  .tool-grid>.panel{min-height:200px!important}
 }
 </style>
+
+<style id="compact-professional-main-header">
+  /* Compact branded title bar; social and summary cards remain in their own row. */
+  header.site-header{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) auto;
+    grid-template-rows:auto auto;
+    align-items:center;
+    column-gap:24px;
+    row-gap:2px;
+    padding:11px clamp(18px,4vw,48px)!important;
+    min-height:0;
+    text-align:left!important;
+    border-bottom:3px solid #60a5fa!important;
+    box-shadow:0 2px 8px rgba(15,23,42,.12)!important;
+  }
+  .site-header h1{
+    grid-column:1;
+    grid-row:1;
+    margin:0!important;
+    font-size:clamp(1.08rem,1.8vw,1.42rem)!important;
+    line-height:1.2!important;
+    letter-spacing:.1px!important;
+  }
+  .site-header h2{
+    grid-column:1;
+    grid-row:2;
+    margin:2px 0 0!important;
+    font-size:.76rem!important;
+    line-height:1.25!important;
+    color:#dbeafe!important;
+  }
+  .site-header .header-credit{
+    grid-column:2;
+    grid-row:1 / span 2;
+    justify-self:end;
+    margin:0!important;
+    padding:7px 12px;
+    border:1px solid rgba(255,255,255,.22);
+    border-radius:8px;
+    background:rgba(255,255,255,.08);
+    color:#eaf2ff!important;
+    font-size:.7rem!important;
+    line-height:1.35!important;
+    text-align:right;
+    white-space:nowrap;
+  }
+  @media(max-width:600px){
+    header.site-header{
+      grid-template-columns:1fr;
+      grid-template-rows:auto auto auto;
+      justify-items:center;
+      gap:3px;
+      padding:10px 10px!important;
+      text-align:center!important;
+    }
+    .site-header h1,.site-header h2,.site-header .header-credit{
+      grid-column:1;
+      grid-row:auto;
+      justify-self:center;
+      text-align:center;
+    }
+    .site-header h1{font-size:1rem!important;line-height:1.25!important}
+    .site-header h2{font-size:.72rem!important}
+    .site-header .header-credit{
+      margin-top:4px!important;
+      padding:4px 8px;
+      font-size:.62rem!important;
+      white-space:normal;
+    }
+  }
+</style>
+
 </head>
 <body>
 
