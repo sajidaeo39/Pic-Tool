@@ -13,7 +13,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script type="module">
-  import { FilesetResolver, ImageSegmenter, FaceLandmarker } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision/vision_bundle.mjs";
+  import { FilesetResolver, ImageSegmenter, FaceLandmarker } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.32/vision_bundle.mjs";
 
   let segmenterInstance = null;
   let segmenterLoadPromise = null;
@@ -25,7 +25,7 @@
 
     if (!segmenterLoadPromise) {
       segmenterLoadPromise = FilesetResolver.forVisionTasks(
-        "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision/wasm"
+        "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.32/wasm"
       ).then((vision) =>
         ImageSegmenter.createFromOptions(vision, {
           baseOptions: {
@@ -74,7 +74,7 @@
     if (faceLandmarkerInstance) return Promise.resolve(faceLandmarkerInstance);
     if (!faceLandmarkerLoadPromise) {
       faceLandmarkerLoadPromise = FilesetResolver.forVisionTasks(
-        "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision/wasm"
+        "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.32/wasm"
       ).then((vision) => FaceLandmarker.createFromOptions(vision, {
         baseOptions: {
           modelAssetPath: "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task",
