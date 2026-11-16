@@ -106,17 +106,17 @@
       const faceW = faceRight - faceLeft, faceH = faceBottom - faceTop;
       if (!(faceW > 8 && faceH > 8)) return { image: imgEl, cropped: false, faceDetected: false };
 
-      // Face occupies about one quarter of the final frame, with extra room below for shoulders/chest.
-      let cropW = Math.max(faceW * 3.8, faceH * 2.85);
+      // A portrait 3:4 frame: face remains prominent, with room for shoulders and upper chest.
+      const maxCropW = Math.min(w, h * 3 / 4);
+      let cropW = Math.min(maxCropW, Math.max(faceW * 4.1, faceH * 3.1));
       let cropH = cropW * 4 / 3;
-      const scale = Math.min(1, w / cropW, h / cropH);
-      cropW *= scale;
-      cropH *= scale;
+      if (!(cropW > 0 && cropH > 0)) return { image: imgEl, cropped: false, faceDetected: true };
 
       const faceCenterX = (faceLeft + faceRight) / 2;
-      const desiredTop = faceTop - faceH * 0.35;
+      const faceCenterY = (faceTop + faceBottom) / 2;
       let sx = faceCenterX - cropW / 2;
-      let sy = desiredTop;
+      // Place the face in the upper quarter of the portrait frame.
+      let sy = faceCenterY - cropH * 0.24;
       sx = Math.max(0, Math.min(w - cropW, sx));
       sy = Math.max(0, Math.min(h - cropH, sy));
 
@@ -2431,8 +2431,10 @@ function processImage(img, maskResult){
       const my = Math.min(maskH - 1, Math.floor((y / img.height) * maskH));
       for (let x = 0; x < img.width; x++){
         const mx = Math.min(maskW - 1, Math.floor((x / img.width) * maskW));
-        const maskVal = mask[my * maskW + mx]; // 0 = background, 255 (or 1) = person, depending on model output scale
-        const isPerson = maskVal <= 30; // inverted mask fix // small threshold tolerance, model returns near-binary values for this selfie model
+        const maskVal = mask[my * maskW + mx];
+        // MediaPipe category mask: category 0 is background; non-zero is the person.
+        // Handle both 0/1 and 0/255 encodings without accidentally cutting out the subject.
+        const isPerson = maskVal > 0;
         if (!isPerson){
           const idx = (y * img.width + x) * 4;
           pixels[idx + 3] = 0; // make background pixels fully transparent
