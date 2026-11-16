@@ -128,7 +128,9 @@
       const faceCenterX = (faceLeft + faceRight) / 2;
       const faceCenterY = (faceTop + faceBottom) / 2;
       let sx = faceCenterX - actualCropW / 2;
-      let sy = faceCenterY - cropH * 0.29;
+      // Keep extra headroom: place the detected top of the head about 18%
+      // down from the crop's top edge instead of risking a tight forehead crop.
+      let sy = faceTop - cropH * 0.18;
       sx = Math.max(0, Math.min(w - actualCropW, sx));
       sy = Math.max(0, Math.min(h - cropH, sy));
 
@@ -2444,9 +2446,9 @@ function processImage(img, maskResult){
       for (let x = 0; x < img.width; x++){
         const mx = Math.min(maskW - 1, Math.floor((x / img.width) * maskW));
         const maskVal = mask[my * maskW + mx];
-        // Selfie Segmenter category mask: 0 = background, 1 = person.
-        // Treat every non-zero category as foreground.
-        const isPerson = maskVal !== 0;
+        // This model build returns 0 for the person and non-zero for
+        // the background in the category mask. Keep the person pixels.
+        const isPerson = maskVal === 0;
         if (!isPerson){
           const idx = (y * img.width + x) * 4;
           pixels[idx + 3] = 0; // make background pixels fully transparent
