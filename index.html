@@ -91,45 +91,58 @@
     return faceLandmarkerLoadPromise;
   }
 
-  // Smart 3:4 crop: center the detected face, leave natural headroom, and include upper body.
-  // The face is never synthetically reshaped; only framing and slight in-plane tilt are corrected.
+  // Smart portrait crop: make the face clearly larger while retaining shoulders and upper chest.
+  // Crop dimensions are based on face size (not the whole source frame), so portrait uploads
+  // with large margins are actually reframed instead of being returned unchanged.
   window.__autoCropUpperBody = async function(imgEl) {
     try {
       const detector = await getFaceLandmarker();
       const result = detector.detect(imgEl);
       const landmarks = result && result.faceLandmarks && result.faceLandmarks[0];
-      if (!landmarks || landmarks.length < 100) return { image: imgEl, cropped: false, faceDetected: false };
-      const w = imgEl.naturalWidth || imgEl.width, h = imgEl.naturalHeight || imgEl.height;
-      const xs = landmarks.map(p => p.x * w), ys = landmarks.map(p => p.y * h);
+      if (!landmarks || landmarks.length < 100) {
+        return { image: imgEl, cropped: false, faceDetected: false };
+      }
+
+      const w = imgEl.naturalWidth || imgEl.width;
+      const h = imgEl.naturalHeight || imgEl.height;
+      const xs = landmarks.map(p => p.x * w);
+      const ys = landmarks.map(p => p.y * h);
       const faceLeft = Math.min(...xs), faceRight = Math.max(...xs);
       const faceTop = Math.min(...ys), faceBottom = Math.max(...ys);
-      const faceW = faceRight - faceLeft, faceH = faceBottom - faceTop;
-      if (!(faceW > 8 && faceH > 8)) return { image: imgEl, cropped: false, faceDetected: false };
+      const faceW = faceRight - faceLeft;
+      const faceH = faceBottom - faceTop;
+      if (!(faceW > 8 && faceH > 8)) {
+        return { image: imgEl, cropped: false, faceDetected: false };
+      }
 
-      // A portrait 3:4 frame: face remains prominent, with room for shoulders and upper chest.
-      const maxCropW = Math.min(w, h * 3 / 4);
-      let cropW = Math.min(maxCropW, Math.max(faceW * 4.1, faceH * 3.1));
-      let cropH = cropW * 4 / 3;
-      if (!(cropW > 0 && cropH > 0)) return { image: imgEl, cropped: false, faceDetected: true };
+      // 3:4 output. About 1.9 face-heights across the crop leaves useful
+      // shoulder/chest space without letting the crop expand to the full photo.
+      const maxCropW = Math.min(w, h * 0.75);
+      const desiredCropW = Math.max(faceW * 2.15, faceH * 1.9);
+      const cropW = Math.min(maxCropW, desiredCropW);
+      const cropH = Math.min(h, cropW * 4 / 3);
+      const actualCropW = Math.min(cropW, cropH * 0.75);
+      if (!(actualCropW > 1 && cropH > 1)) {
+        return { image: imgEl, cropped: false, faceDetected: true };
+      }
 
       const faceCenterX = (faceLeft + faceRight) / 2;
       const faceCenterY = (faceTop + faceBottom) / 2;
-      let sx = faceCenterX - cropW / 2;
-      // Place the face in the upper quarter of the portrait frame.
-      let sy = faceCenterY - cropH * 0.24;
-      sx = Math.max(0, Math.min(w - cropW, sx));
+      let sx = faceCenterX - actualCropW / 2;
+      let sy = faceCenterY - cropH * 0.29;
+      sx = Math.max(0, Math.min(w - actualCropW, sx));
       sy = Math.max(0, Math.min(h - cropH, sy));
 
       const out = document.createElement("canvas");
-      out.width = Math.max(1, Math.round(cropW));
+      out.width = Math.max(1, Math.round(actualCropW));
       out.height = Math.max(1, Math.round(cropH));
       const outCtx = out.getContext("2d");
       if (!outCtx) return { image: imgEl, cropped: false, faceDetected: true };
-      outCtx.drawImage(imgEl, sx, sy, cropW, cropH, 0, 0, out.width, out.height);
+      outCtx.drawImage(imgEl, sx, sy, actualCropW, cropH, 0, 0, out.width, out.height);
       return { image: out, cropped: true, faceDetected: true };
     } catch (error) {
-      console.warn("Automatic upper-body crop unavailable; using the full photo.", error);
-      return { image: imgEl, cropped: false, faceDetected: false };
+      console.warn("Automatic upper-body crop failed; keeping the original framing.", error);
+      return { image: imgEl, cropped: false, faceDetected: false, error };
     }
   };
 
