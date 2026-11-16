@@ -47,28 +47,35 @@
   }
 
   window.__segmentPerson = function (imgEl) {
-    return getSegmenter().then((segmenter) => {
-      return new Promise((resolve, reject) => {
-        try {
-          segmenter.segment(imgEl, (result) => {
-            try {
-              const mask = result.categoryMask;
-              if (!mask) {
-                reject(new Error("No mask returned"));
-                return;
-              }
-              const maskData = mask.getAsUint8Array();
-              resolve({ maskData, width: mask.width, height: mask.height });
-              mask.close && mask.close();
-            } catch (innerErr) {
-              reject(innerErr);
+    return getSegmenter().then((segmenter) => new Promise((resolve, reject) => {
+      try {
+        // In IMAGE mode the callback is synchronous. Copy the mask bytes
+        // inside the callback before closing the MediaPipe result; otherwise
+        // the typed-array view can become invalid before canvas processing uses it.
+        segmenter.segment(imgEl, (result) => {
+          try {
+            const mask = result && result.categoryMask;
+            if (!mask) throw new Error("MediaPipe returned no category mask");
+            const rawMask = mask.getAsUint8Array();
+            if (!rawMask || !rawMask.length) throw new Error("MediaPipe returned an empty mask");
+            const maskData = new Uint8Array(rawMask);
+            const width = mask.width;
+            const height = mask.height;
+            if (!width || !height || maskData.length < width * height) {
+              throw new Error("MediaPipe returned an invalid mask size");
             }
-          });
-        } catch (err) {
-          reject(err);
-        }
-      });
-    });
+            resolve({ maskData, width, height });
+          } catch (innerErr) {
+            reject(innerErr);
+          } finally {
+            if (result && typeof result.close === "function") result.close();
+            else if (result && result.categoryMask && typeof result.categoryMask.close === "function") result.categoryMask.close();
+          }
+        });
+      } catch (err) {
+        reject(err);
+      }
+    }));
   };
 
   function getFaceLandmarker() {
@@ -2445,9 +2452,9 @@ function processImage(img, maskResult){
       for (let x = 0; x < img.width; x++){
         const mx = Math.min(maskW - 1, Math.floor((x / img.width) * maskW));
         const maskVal = mask[my * maskW + mx];
-        // MediaPipe category mask: category 0 is background; non-zero is the person.
-        // Handle both 0/1 and 0/255 encodings without accidentally cutting out the subject.
-        const isPerson = maskVal > 0;
+        // Selfie Segmenter category mask: 0 = background, 1 = person.
+        // Treat every non-zero category as foreground.
+        const isPerson = maskVal !== 0;
         if (!isPerson){
           const idx = (y * img.width + x) * 4;
           pixels[idx + 3] = 0; // make background pixels fully transparent
