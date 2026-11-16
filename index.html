@@ -1988,6 +1988,27 @@ document.addEventListener('DOMContentLoaded', function(){
 <style id="smart-auto-crop-note">
   .auto-crop-note{margin:12px auto 0!important;padding:8px 10px;width:min(92%,430px);border:1px solid #dbeafe;border-radius:9px;background:#eff6ff;color:#1e40af;font-size:.72rem!important;font-weight:650;line-height:1.4;text-align:center}
 </style>
+<style id="taller-before-after-preview">
+  /* Slightly taller Before / After photo workspace */
+  @media (min-width: 900px){
+    .preview-panel .preview-img-frame{
+      aspect-ratio: 4 / 3 !important;
+      max-height: 480px !important;
+    }
+  }
+  @media (max-width: 899px){
+    .preview-panel .preview-img-frame{
+      aspect-ratio: 4 / 3 !important;
+      max-height: 360px !important;
+    }
+  }
+  @media (max-width: 480px){
+    .preview-panel .preview-img-frame{
+      aspect-ratio: 4 / 3 !important;
+      max-height: 320px !important;
+    }
+  }
+</style>
 </head>
 <body>
 
