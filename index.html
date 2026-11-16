@@ -47,35 +47,27 @@
   }
 
   window.__segmentPerson = function (imgEl) {
-    return getSegmenter().then((segmenter) => new Promise((resolve, reject) => {
+    return getSegmenter().then((segmenter) => {
+      // Use the documented synchronous IMAGE-mode overload. It returns an
+      // ImageSegmenterResult with copied mask output, avoiding callback
+      // lifetime/race problems when the mask is consumed by canvas code.
+      const result = segmenter.segment(imgEl);
       try {
-        // In IMAGE mode the callback is synchronous. Copy the mask bytes
-        // inside the callback before closing the MediaPipe result; otherwise
-        // the typed-array view can become invalid before canvas processing uses it.
-        segmenter.segment(imgEl, (result) => {
-          try {
-            const mask = result && result.categoryMask;
-            if (!mask) throw new Error("MediaPipe returned no category mask");
-            const rawMask = mask.getAsUint8Array();
-            if (!rawMask || !rawMask.length) throw new Error("MediaPipe returned an empty mask");
-            const maskData = new Uint8Array(rawMask);
-            const width = mask.width;
-            const height = mask.height;
-            if (!width || !height || maskData.length < width * height) {
-              throw new Error("MediaPipe returned an invalid mask size");
-            }
-            resolve({ maskData, width, height });
-          } catch (innerErr) {
-            reject(innerErr);
-          } finally {
-            if (result && typeof result.close === "function") result.close();
-            else if (result && result.categoryMask && typeof result.categoryMask.close === "function") result.categoryMask.close();
-          }
-        });
-      } catch (err) {
-        reject(err);
+        const mask = result && result.categoryMask;
+        if (!mask) throw new Error("MediaPipe returned no category mask");
+        const rawMask = mask.getAsUint8Array();
+        if (!rawMask || !rawMask.length) throw new Error("MediaPipe returned an empty mask");
+        const maskData = new Uint8Array(rawMask);
+        const width = mask.width;
+        const height = mask.height;
+        if (!width || !height || maskData.length < width * height) {
+          throw new Error("MediaPipe returned an invalid mask size");
+        }
+        return { maskData, width, height };
+      } finally {
+        if (result && typeof result.close === "function") result.close();
       }
-    }));
+    });
   };
 
   function getFaceLandmarker() {
